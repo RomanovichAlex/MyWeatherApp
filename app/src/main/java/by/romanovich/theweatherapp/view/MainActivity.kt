@@ -1,4 +1,4 @@
-package by.romanovich.theweatherapp
+package by.romanovich.theweatherapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import by.romanovich.theweatherapp.R
+import by.romanovich.theweatherapp.lesson1.Weather
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
