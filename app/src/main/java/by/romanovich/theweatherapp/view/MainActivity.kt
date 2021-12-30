@@ -1,10 +1,11 @@
 package by.romanovich.theweatherapp.view
-//глянуть 2.28 мин лекции!!! объяснение работы приложения
-
-import androidx.appcompat.app.AppCompatActivity
+//глянуть 2 лекция 2.28 мин !!! объяснение работы приложения
+//глянуть 3 лекция 4.28 мин !!! объяснение работы приложения
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.ActivityMainBinding
+import by.romanovich.theweatherapp.view.main.MainFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         //если нормальный запуск
         if(savedInstanceState==null){
-            supportFragmentManager.beginTransaction().replace(R.id.container,MainFragment.newInstance()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance()).commit()
         }
     }
 

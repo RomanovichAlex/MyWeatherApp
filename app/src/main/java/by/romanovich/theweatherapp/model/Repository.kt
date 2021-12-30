@@ -4,8 +4,9 @@ package by.romanovich.theweatherapp.model
 interface Repository {
 
     //функция для возврата погоды с сервера
-    fun getWeatherFromServer(): Weather
+        fun getWeatherFromServer(): Weather
 
     //функция для возврата погоды локально
-    fun getWeatherFromLocalStorage(): Weather
+        fun getWeatherFromLocalStorageRus(): List<Weather>
+        fun getWeatherFromLocalStorageWorld(): List<Weather>
 }
