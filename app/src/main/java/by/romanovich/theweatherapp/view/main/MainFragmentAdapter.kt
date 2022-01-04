@@ -47,8 +47,8 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
         return weatherData.size
     }
 
-
-    inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+//Было
+    /*inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: Weather) {
             //заполняем список
             val binding = MainRecyclerItemBinding.bind(itemView)
@@ -57,6 +57,23 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
             binding.root.setOnClickListener {
                 // по клику передаем погоду
                 listener.onItemClick(weather)
+            }
+        }
+    }*/
+    //Стало
+    inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(weather: Weather) {
+            with(MainRecyclerItemBinding.bind(itemView)){
+                mainFragmentRecyclerItemTextView.text = weather.city.name
+                root.setOnClickListener {
+                    listener.onItemClick(weather)
+                }
+            }
+            MainRecyclerItemBinding.bind(itemView).run {
+                mainFragmentRecyclerItemTextView.text = weather.city.name
+                root.setOnClickListener {
+                    listener.onItemClick(weather)
+                }
             }
         }
     }

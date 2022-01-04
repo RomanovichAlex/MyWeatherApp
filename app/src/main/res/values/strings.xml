@@ -8,8 +8,9 @@
     <string name="city_coordinates">lt/ln: %s, %s"</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
-    <string name="Error">Error</string>
     <string name="retryAgein">Попробовать ещше раз</string>
     <string name="Succes">Success</string>
+    <string name="Success_show">Success showSnackBarWithoutAction</string>
+    <string name="Error">Error</string>
 
 </resources>
