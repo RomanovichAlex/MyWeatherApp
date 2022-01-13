@@ -27,6 +27,7 @@ class DetailsFragment : Fragment() {
         //достаем веазер из аргументов, досаем парсеализированную погоду по ключу
         //val weather = arguments?.getParcelable<Weather>(BUNDLE_KEY)
         //if(weather!=null){ setWeatherData(weather) }
+
         //Стало:
         //работа с аргументами и в случае если они есть, из того что я получил извликаю веазер
         arguments?.let {
@@ -48,11 +49,12 @@ class DetailsFragment : Fragment() {
     //Стало:
     private fun setWeatherData(weather: Weather) {
         with(binding) {
-
-            cityName.text = weather.city.name
-            cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
-            temperatureValue.text = "${weather.temperature}"
-            feelsLikeValue.text = "${weather.feelsLike}"
+            with(weather){
+            cityName.text = city.name
+            cityCoordinates.text = "${city.lat} ${city.lon}"
+            temperatureValue.text = "${temperature}"
+            feelsLikeValue.text = "${feelsLike}"
+            }
         }
     }
 

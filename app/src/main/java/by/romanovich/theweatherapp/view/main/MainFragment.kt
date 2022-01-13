@@ -33,7 +33,7 @@ class MainFragment : Fragment(),OnMyItemClickListener {
     /*//было
 // в мфа передаем
     private val adapter = MainFragmentAdapter(this)*/
-    //Стало
+    //Стало by lazy— ленивая инициализация
     private val adapter: MainFragmentAdapter by lazy {
         MainFragmentAdapter(this)
     }
@@ -121,11 +121,12 @@ class MainFragment : Fragment(),OnMyItemClickListener {
             when (appState) {
                 is AppState.Error -> {
                     mainFragmentLoadingLayout.visibility = View.GONE
-
-                    Snackbar.make(root, getString(R.string.Error), Snackbar.LENGTH_LONG)
+                    root.showSnackBar("R.string.Error","R.string.retryAgein",
+                        { viewModel.getWeatherFromLocalSourceRus() },Snackbar.LENGTH_INDEFINITE)
+                   /* Snackbar.make(root, getString(R.string.Error), Snackbar.LENGTH_LONG)
                         .setAction(R.string.retryAgein) {
                             sentRequest()
-                        }.show()
+                        }.show()*/
                 }
                 is AppState.Loading -> {
                     mainFragmentLoadingLayout.visibility = View.VISIBLE
@@ -143,9 +144,15 @@ class MainFragment : Fragment(),OnMyItemClickListener {
     }
 
     //View-как санстрейн лайаут как ресивер,
-    fun View.showSnackBarWithoutAction(text:String,length:Int){
+    private fun View.showSnackBarWithoutAction(text:String,length:Int){
         Snackbar.make(this,text,length).show()
     }
+
+    private fun View.showSnackBar(text: String, actionText: String, action: (View) -> Unit, length: Int = Snackbar.LENGTH_INDEFINITE) {
+        Snackbar.make(this, text, length).setAction(actionText, action).show()
+    }
+
+
 
 
     // Важно! Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого
