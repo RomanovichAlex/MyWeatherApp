@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import by.romanovich.theweatherapp.databinding.MainRecyclerItemBinding
+import by.romanovich.theweatherapp.databinding.FragmentMainRecyclerCityItemBinding
 import by.romanovich.theweatherapp.model.Weather
 
 
@@ -27,8 +27,8 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
         parent: ViewGroup,
         viewType: Int
     ): MainFragmentAdapter.MainViewHolder {
-        val binding: MainRecyclerItemBinding =
-            MainRecyclerItemBinding.inflate(
+        val binding: FragmentMainRecyclerCityItemBinding =
+            FragmentMainRecyclerCityItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -63,13 +63,13 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
     //Стало
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: Weather) {
-            with(MainRecyclerItemBinding.bind(itemView)){
+            with(FragmentMainRecyclerCityItemBinding.bind(itemView)){
                 mainFragmentRecyclerItemTextView.text = weather.city.name
                 root.setOnClickListener {
                     listener.onItemClick(weather)
                 }
             }
-            MainRecyclerItemBinding.bind(itemView).run {
+            FragmentMainRecyclerCityItemBinding.bind(itemView).run {
                 mainFragmentRecyclerItemTextView.text = weather.city.name
                 root.setOnClickListener {
                     listener.onItemClick(weather)
