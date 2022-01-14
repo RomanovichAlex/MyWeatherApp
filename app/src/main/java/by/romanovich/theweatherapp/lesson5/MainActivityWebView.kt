@@ -62,9 +62,11 @@ class MainActivityWebView : AppCompatActivity() {
                     null
                 )
             }
-            //из вспомогательного потока вызывайм ссылкой главный
+            //из вспомогательного потока вызываем ссылкой главный
             val handlerMainUI1 = Handler(mainLooper)
+            //== верхней записи
             val handlerMainUI2 = Handler(Looper.getMainLooper())
+            //хэндлеру говорим сделай нам задачу(пост) отправь нам задачу выполни вебвью и загрузи туда данные
             handlerMainUI1.post {
                 binding.webView.loadDataWithBaseURL(
                     null,
@@ -74,6 +76,7 @@ class MainActivityWebView : AppCompatActivity() {
                     null
                 )
             }
+            //ссылается на главный поток майн
             handlerCurrent1.post {
                 binding.webView.loadDataWithBaseURL(
                     null,
@@ -90,6 +93,7 @@ class MainActivityWebView : AppCompatActivity() {
             httpsURLConnection.disconnect()
         }.start()
     }
+
 
 
 //склеиваем данные из буферридера
