@@ -5,13 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import by.romanovich.theweatherapp.databinding.FragmentDetailsBinding
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.model.WeatherDTO
+import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.utils.WeatherLoader
 
-const val BUNDLE_KEY = "key"
+
 class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
 
 
@@ -76,7 +78,8 @@ class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
         Log.d("","")
     }
 
-    override fun onFailed() {
-        //TODO HW
+    override fun onFailed(e: Throwable) {
+        Toast.makeText(context,"e", Toast.LENGTH_SHORT).show()
+
     }
 }

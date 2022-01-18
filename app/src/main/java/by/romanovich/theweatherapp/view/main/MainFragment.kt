@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.FragmentMainBinding
 import by.romanovich.theweatherapp.model.Weather
-import by.romanovich.theweatherapp.view.details.BUNDLE_KEY
+import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.view.details.DetailsFragment
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.MainViewModel
