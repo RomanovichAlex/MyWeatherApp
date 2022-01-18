@@ -9,7 +9,7 @@ data class Weather(val city:City= getDefaultCity(), val temperature:Int=20, val 
 
 //название города, долгота и широта
 @Parcelize
-data class City(val name:String,val lon:Double,val lat:Double):Parcelable
+data class City(val name:String,val lat:Double,val lon:Double):Parcelable
 
 //функция генерирующая случайный город
 fun getDefaultCity() = City("Москва",37.5,55.5)

@@ -2,6 +2,7 @@ package by.romanovich.theweatherapp.utils
 
 import android.os.Handler
 import android.os.Looper
+import by.romanovich.theweatherapp.BuildConfig
 import by.romanovich.theweatherapp.model.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -34,7 +35,7 @@ class WeatherLoader(private val onWeatherLoaded: OnWeatherLoaded) {
                 requestMethod = "GET"
                 readTimeout = 2000
                 //задали заголовок, передаем ключ апи и личный ключ
-                addRequestProperty("X-Yandex-API-Key", "82a52463-8a9e-4b53-9bf5-7f150997a35f")
+                addRequestProperty("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY)
             }
             //в буфере жсон данные, конвертируем в дто из строки. открываем на чтение с считываем в буфер
             val bufferedReader = BufferedReader(InputStreamReader(httpsURLConnection.inputStream))
