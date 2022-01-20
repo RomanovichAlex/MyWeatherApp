@@ -1,8 +1,10 @@
 package by.romanovich.theweatherapp.lesson6
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,16 @@ import by.romanovich.theweatherapp.databinding.FragmentThreadsBinding
 
 
 class ThreadsFragment : Fragment() {
+// методы фрагмента
+    //контекст активити открывается
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+//контекст удаляется
+    override fun onDetach() {
+        super.onDetach()
+    }
+
 
     private var _binding: FragmentThreadsBinding? = null
     private val binding: FragmentThreadsBinding
@@ -24,21 +36,24 @@ class ThreadsFragment : Fragment() {
     val myThread = MyThread()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         myThread.start()
         //по клику на кнопку передаем потоку наши задачи
-        binding.button.setOnClickListener {
+        binding.button.setOnClickListener {           //в лямбду приходит параметр ит
             myThread.handler?.post {
                 //обработка задач
                 val result = startCalculations(2)
-                activity?.let{ activity->
-                    //
+                // после онДетач активити занулена(ее не существует), фрагмент повис в воздухе
+                //activity?.let{ activity->//-контекст приходит в параметр
+                    //передаем задачу в поток
                     Handler(Looper.getMainLooper()).post {
+                        Log.d("My Logs", "Происходит утечка в fragment c binding $binding")
                         //создаем новые вьюхи на каждый из наших потоков, добавляя их в mainContainer
                         binding.mainContainer.addView(TextView(activity).apply {
                             text = result
                         })
                     }
-                }
+                //}
             }
         }
     }
@@ -62,9 +77,13 @@ class ThreadsFragment : Fragment() {
     }
 
 
+    //поток закрывается
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        //удаляем все задачи из потока
+        //myThread.handler?.removeCallbacksAndMessages(null)
+        //зануляем байндинг
+        //_binding = null
     }
 
     override fun onCreateView(
