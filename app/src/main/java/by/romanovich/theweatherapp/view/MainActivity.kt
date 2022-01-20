@@ -1,12 +1,15 @@
 package by.romanovich.theweatherapp.view
 //глянуть 2 лекция 2.28 мин !!! объяснение работы приложения
 //глянуть 3 лекция 4.28 мин !!! объяснение работы приложения
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.ActivityMainBinding
+import by.romanovich.theweatherapp.lesson6.MAIN_SERVICE_KEY_EXTRAS
+import by.romanovich.theweatherapp.lesson6.MyService
 import by.romanovich.theweatherapp.lesson6.ThreadsFragment
 import by.romanovich.theweatherapp.view.main.MainFragment
 
@@ -27,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState==null){
             supportFragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance()).commit()
         }
+        startService(Intent(this,MyService::class.java).apply {
+            putExtra(MAIN_SERVICE_KEY_EXTRAS,"hello")
+        })
     }
 
 

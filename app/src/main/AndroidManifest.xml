@@ -14,7 +14,6 @@
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +25,10 @@
             android:exported="true">
 
         </activity>
+
+        <service android:name=".lesson6.MyService">
+
+        </service>
 
     </application>
 

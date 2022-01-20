@@ -68,6 +68,7 @@ class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
     }
 
     companion object {
+        //мы передаем бандл и помещаем его в аргументы
         fun newInstance(bundle:Bundle)=DetailsFragment().apply { arguments = bundle }
     }
 
