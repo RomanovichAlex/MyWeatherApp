@@ -12,5 +12,7 @@
     <string name="Succes">Success</string>
     <string name="Success_show">Success showSnackBarWithoutAction</string>
     <string name="Error">Error</string>
+    <string name="Threads">Потоки</string>
+    <string name="calculate">calculate</string>
 
 </resources>
