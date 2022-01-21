@@ -14,6 +14,12 @@ import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.utils.WeatherLoader
 
 
+const val BUNDLE_KEY_WEATHER = "key_weather_dto"
+const val LATITUDE_EXTRA = "Latitude"
+const val LONGITUDE_EXTRA = "Longitude"
+const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
+
+
 class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
 
 
