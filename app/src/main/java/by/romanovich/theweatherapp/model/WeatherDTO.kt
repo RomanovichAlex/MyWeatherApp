@@ -25,6 +25,7 @@ data class Fact (
 
     @SerializedName("feels_like")
     val feelsLike: Long,
+
     val icon: String,
     val condition: String,
 
@@ -39,6 +40,7 @@ data class Fact (
 
     @SerializedName("pressure_pa")
     val pressurePa: Long,
+
     val humidity: Long,
     val daytime: String,
     val polar: Boolean,
@@ -49,13 +51,13 @@ data class Fact (
     val windGust: Double
 ):Parcelable
 
-
 @Parcelize
 data class Forecast (
     val date: String,
 
     @SerializedName("date_ts")
     val dateTs: Long,
+
     val week: Long,
     val sunrise: String,
     val sunset: String,
@@ -93,21 +95,21 @@ data class Part (
     val windDir: String,
 
     @SerializedName("pressure_mm")
-    val pressureMm: Double,
+    val pressureMm: Long,
 
     @SerializedName("pressure_pa")
-    val pressurePa: Double,
+    val pressurePa: Long,
 
-    val humidity: Double,
+    val humidity: Long,
 
     @SerializedName("prec_mm")
     val precMm: Double,
 
     @SerializedName("prec_prob")
-    val precProb: Double,
+    val precProb: Long,
 
     @SerializedName("prec_period")
-    val precPeriod: Double,
+    val precPeriod: Long,
 
     val icon: String,
     val condition: String,

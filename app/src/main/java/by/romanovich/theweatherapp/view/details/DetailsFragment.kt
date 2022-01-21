@@ -1,26 +1,29 @@
 package by.romanovich.theweatherapp.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import by.romanovich.theweatherapp.databinding.FragmentDetailsBinding
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.model.WeatherDTO
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
-import by.romanovich.theweatherapp.utils.WeatherLoader
 
 
 const val BUNDLE_KEY_WEATHER = "key_weather_dto"
+const val BROADCAST_ACTION = "BROADCAST_KEY"
 const val LATITUDE_EXTRA = "Latitude"
 const val LONGITUDE_EXTRA = "Longitude"
-const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 
 
-class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
+
+class DetailsFragment : Fragment() {
 
 
 
@@ -30,26 +33,43 @@ class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
             return _binding!!
         }
 
+    //наш ресивер является BroadcastReceiver
+    private val receiver: BroadcastReceiver = object :BroadcastReceiver(){
+        //и в этом методе мы получчаем интент в котором сидит ВезерДТО
+        override fun onReceive(context: Context?, intent: Intent?) {
+            //если интент не нулл, если в нем вернем погоду по ключу и отправили в сетВезер...
+            intent?.let {
+                it.getParcelableExtra<WeatherDTO>(BUNDLE_KEY_WEATHER)?.let {
+                    setWeatherData(it)
+                }
+            }
+        }
+    }
 
-
-    private val weatherLoader =WeatherLoader(this)
-    lateinit var locaWeather:Weather
+    lateinit var localWeather :Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let{
+        arguments?.let {
             it.getParcelable<Weather>(BUNDLE_KEY)?.let {
-                locaWeather = it
-                weatherLoader.loadWeather(it.city.lat,it.city.lon)
+                localWeather = it
+                //поместили широту долготу
+                requireActivity().startService(Intent(requireActivity(), DetailsService::class.java).apply {
+                    putExtra(LATITUDE_EXTRA,it.city.lat)
+                    putExtra(LONGITUDE_EXTRA,it.city.lon)
+                })
             }
         }
-
+        //регистрируем локальный приемник
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter(BROADCAST_ACTION) )
+    //регистрируем глобальный приемник
+    //requireActivity().registerReceiver(receiver, IntentFilter(BROADCAST_ACTION) )
     }
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
 
         with(binding){
-            with(locaWeather){
+            with(localWeather){
                 cityName.text = city.name
                 cityCoordinates.text =
                     "${city.lat} ${city.lon}"
@@ -63,6 +83,10 @@ class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        //requireActivity().unregisterReceiver(receiver)
+        context?.let {
+            LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
+        }
     }
 
     override fun onCreateView(
@@ -76,17 +100,5 @@ class DetailsFragment : Fragment(),WeatherLoader.OnWeatherLoaded {
     companion object {
         //мы передаем бандл и помещаем его в аргументы
         fun newInstance(bundle:Bundle)=DetailsFragment().apply { arguments = bundle }
-    }
-
-    override fun onLoaded(weatherDTO: WeatherDTO?) {
-        weatherDTO?.let {
-            setWeatherData(weatherDTO)
-        }
-        Log.d("","")
-    }
-
-    override fun onFailed(e: Throwable) {
-        Toast.makeText(context,"e", Toast.LENGTH_SHORT).show()
-
     }
 }

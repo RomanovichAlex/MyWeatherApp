@@ -43,7 +43,9 @@ class MainFragment : Fragment(),OnMyItemClickListener {
     private var isRussian = true
 
     //во вью делаем ссылку на вью модел
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
 
     //инициализируем вью модел
@@ -51,7 +53,6 @@ class MainFragment : Fragment(),OnMyItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         // ViewModelProvider - хранилище вьюмодел, что бы создовались в одном экземпляре,
         // и возращаем вьюмодел поскольку ее не существуетViewModelProvider ее и создает
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         initView()
         // обращаем внимание, просим вьюмодел вернуть лайфдату и устанавливаем слушателя на изменения лайфдаты (если они произошли -renderData)
         // с viewLifecycleOwner - жизненный путь

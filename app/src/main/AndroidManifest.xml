@@ -30,6 +30,12 @@
 
         </service>
 
+
+        <service android:name=".view.details.DetailsService">
+
+        </service>
+
+
         <receiver
 
             android:enabled="true"
