@@ -22,7 +22,7 @@ class MainActivityWebView : AppCompatActivity() {
         //Передаем корневой макет в метод setContentView()., Каждый биндинг-класс также имеет метод getRoot(), который возвращает корневой layout
         setContentView(binding.root)
 // по кнопке ок открывается строка с именем сайта
-        binding.btnOk.setOnClickListener{
+        binding.btnOk.setOnClickListener {
             request(binding.etUrl.text.toString())
         }
     }
@@ -36,22 +36,23 @@ class MainActivityWebView : AppCompatActivity() {
             } finally {
                 httpsURLConnection.disconnect()
             }*/
-        val handlerCurrent1 = Handler(Looper.myLooper()!!)
+        val handlerCurrent1 = Handler(Looper.myLooper() !!)
         //выносим все во вспомогательный поток
         Thread {
-        val url = URL(urlString)
-        //у урл открываем связь с сайтом и указываем какого типа должна быть связь
+            val url = URL(urlString)
+            //у урл открываем связь с сайтом и указываем какого типа должна быть связь
             val httpsURLConnection = (url.openConnection() as HttpsURLConnection).apply {
 // устанавливаем настройки, метод запроса
-            requestMethod = "GET"// установка метода получения данных -- GET
+                requestMethod = "GET"// установка метода получения данных -- GET
 // устанавливаем настройки, устанавливаем таймаут ожидания ответа сервера
-            readTimeout = 2000
-        }
-        // у нас есть буфер в который пришла информация из
-        // нашего подключения HttpsURLConnection который подключен по урл к адресу нашего сайта
-        val bufferedReader = BufferedReader(InputStreamReader(httpsURLConnection.inputStream))// читаемданные в поток
-        //нажно обработать данные из буфера и привести к результату, конвертируем данные
-        val result = convertBufferToResult(bufferedReader)
+                readTimeout = 2000
+            }
+            // у нас есть буфер в который пришла информация из
+            // нашего подключения HttpsURLConnection который подключен по урл к адресу нашего сайта
+            val bufferedReader =
+                BufferedReader(InputStreamReader(httpsURLConnection.inputStream))// читаемданные в поток
+            //нажно обработать данные из буфера и привести к результату, конвертируем данные
+            val result = convertBufferToResult(bufferedReader)
 // загрузка данных в вебвью, вызвали главный поток
             runOnUiThread {
                 binding.webView.loadDataWithBaseURL(
@@ -87,7 +88,7 @@ class MainActivityWebView : AppCompatActivity() {
                 )
             }
             handlerCurrent1.post {
-            //binding.webView.loadUrl(url.path)
+                //binding.webView.loadUrl(url.path)
             }
 
             httpsURLConnection.disconnect()
@@ -95,10 +96,9 @@ class MainActivityWebView : AppCompatActivity() {
     }
 
 
-
-//склеиваем данные из буферридера
-private fun convertBufferToResult(bufferedReader: BufferedReader): String {
-    return bufferedReader.lines().collect(Collectors.joining("\n"))
+    //склеиваем данные из буферридера
+    private fun convertBufferToResult(bufferedReader: BufferedReader): String {
+        return bufferedReader.lines().collect(Collectors.joining("\n"))
 
     }
 }

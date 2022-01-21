@@ -6,37 +6,37 @@ import android.util.Log
 
 class LambdaKotlin {
 
-//класс персон
-    data class Person(var name: String, var age:Int)
+    //класс персон
+    data class Person(var name: String, var age: Int)
 
     fun main() {
 //создали объект персон он может быть нулл
-        var p:Person? = null
+        var p: Person? = null
 
 
 //если п не нулл
-        if(p!=null){
+        if (p != null) {
 //то выводим
-            Log.d("mylogs","${p.name} ${p.age}")
+            Log.d("mylogs", "${p.name} ${p.age}")
         }
 
         //
         p?.let {
             //присвоили п нулл
-            p=null
+            p = null
             // п выводится до вызова лет
-            Log.d("mylogs","${it.name} ${it.age}")
+            Log.d("mylogs", "${it.name} ${it.age}")
         }
         p?.run {
-            Log.d("mylogs","${this.name} ${age}")
+            Log.d("mylogs", "${this.name} ${age}")
         }
-        val person2 = Person("",1)
-        val person = Person("",1)
+        val person2 = Person("", 1)
+        val person = Person("", 1)
 
 
 //работаем с персон как с параметром
         //with() из висс возрощается результат исполнения скобок
-        val resultWith = with(person){
+        val resultWith = with(person) {
             //зиис можно опускать
             this.name = "sdf"
             age = 1
@@ -55,7 +55,7 @@ class LambdaKotlin {
         //работаем с персон как с ресивером
         //.run возрощает результат лямбды
         run { // отдельная область видимости
-            val person2 = Person("",1)
+            val person2 = Person("", 1)
         }
 
         val resultRun = person.run {
@@ -78,14 +78,13 @@ class LambdaKotlin {
 
         //работаем с персон как с ресивером
         //.apply возращает зиис(персон) с изменениями(пришел ресивер ресивер и вернули, т.е. возращает тот же объект)
-        val newPersonApply= person.apply {
+        val newPersonApply = person.apply {
             this.name = "ApplyName"
             name = "ApplyName"
             age = 50
         }
 
     }
-
 
 
 }

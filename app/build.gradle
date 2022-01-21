@@ -9,19 +9,19 @@ android {
     compileSdk 31
 
     //подключили Binding
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
 //Для всех версий (релизной и дебажной)
-    buildTypes.each{
+    buildTypes.each {
         //создаем пустой файл
         Properties properties = new Properties()
         //в него загружаем содержимое файла апикей проп...
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         // из этого объекта считываем свойства по ключу
-        def apiKey = properties.getProperty("yandex_weather_api_key","")
+        def apiKey = properties.getProperty("yandex_weather_api_key", "")
         //и внедряем эту переменную в буилд..
-        it.buildConfigField "String","WEATHER_API_KEY",apiKey
+        it.buildConfigField "String", "WEATHER_API_KEY", apiKey
     }
 
     defaultConfig {

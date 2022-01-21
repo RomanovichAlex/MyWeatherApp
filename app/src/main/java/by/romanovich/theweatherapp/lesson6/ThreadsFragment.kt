@@ -19,6 +19,7 @@ class ThreadsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
+
     //контекст удаляется
     override fun onDetach() {
         super.onDetach()
@@ -28,7 +29,7 @@ class ThreadsFragment : Fragment() {
     private var _binding: FragmentThreadsBinding? = null
     private val binding: FragmentThreadsBinding
         get() {
-            return _binding!!
+            return _binding !!
         }
 
     //создали один поток для этого фрагмента и выполнения задач
@@ -37,52 +38,52 @@ class ThreadsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         myThread.start()
         //по клику на кнопку передаем потоку наши задачи
-            binding.button.setOnClickListener {           //в лямбду приходит параметр ит
-                myThread.handler?.post {
-                    //обработка задач
-                    val result = startCalculations(2)
-                    // после онДетач активити занулена(ее не существует), фрагмент повис в воздухе
-                    activity?.let { activity ->//-контекст приходит в параметр
-                        //передаем задачу в поток
-                        Handler(Looper.getMainLooper()).post {
-                            Log.d("My Logs", "Происходит утечка в fragment c binding $binding")
-                            //создаем новые вьюхи на каждый из наших потоков, добавляя их в mainContainer
-                            binding.mainContainer.addView(TextView(activity).apply {
-                                text = result
-                            })
-                        }
+        binding.button.setOnClickListener {           //в лямбду приходит параметр ит
+            myThread.handler?.post {
+                //обработка задач
+                val result = startCalculations(2)
+                // после онДетач активити занулена(ее не существует), фрагмент повис в воздухе
+                activity?.let { activity ->//-контекст приходит в параметр
+                    //передаем задачу в поток
+                    Handler(Looper.getMainLooper()).post {
+                        Log.d("My Logs", "Происходит утечка в fragment c binding $binding")
+                        //создаем новые вьюхи на каждый из наших потоков, добавляя их в mainContainer
+                        binding.mainContainer.addView(TextView(activity).apply {
+                            text = result
+                        })
                     }
                 }
             }
         }
+    }
 
 
-        //что бы не создавать кучу потоков, будем работать в одном
-        class MyThread:Thread(){
-            var handler: Handler?= null
-            override fun run() {
-                //зацикливаем, поток(бесконечные поток, чтобы не закрывался по сле выполнения задачи)
-                Looper.prepare()
-                handler = Handler(Looper.myLooper()!!)
-                Looper.loop()
-            }
+    //что бы не создавать кучу потоков, будем работать в одном
+    class MyThread : Thread() {
+        var handler: Handler? = null
+        override fun run() {
+            //зацикливаем, поток(бесконечные поток, чтобы не закрывался по сле выполнения задачи)
+            Looper.prepare()
+            handler = Handler(Looper.myLooper() !!)
+            Looper.loop()
         }
+    }
 
-        private fun startCalculations(seconds: Int): String {
-            Thread.sleep(seconds*1000L)
-            return "${seconds.toString()} ${Thread.currentThread().name}"
-        }
+    private fun startCalculations(seconds: Int): String {
+        Thread.sleep(seconds * 1000L)
+        return "${seconds.toString()} ${Thread.currentThread().name}"
+    }
 
 
-        //поток закрывается
-        override fun onDestroy() {
-            super.onDestroy()
-            _binding = null
-            //удаляем все задачи из потока
-            myThread.handler?.removeCallbacksAndMessages(null)
-            //зануляем байндинг
-            _binding = null
-        }
+    //поток закрывается
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        //удаляем все задачи из потока
+        myThread.handler?.removeCallbacksAndMessages(null)
+        //зануляем байндинг
+        _binding = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

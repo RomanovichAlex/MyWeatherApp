@@ -22,19 +22,17 @@ const val LATITUDE_EXTRA = "Latitude"
 const val LONGITUDE_EXTRA = "Longitude"
 
 
-
 class DetailsFragment : Fragment() {
-
 
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding
         get() {
-            return _binding!!
+            return _binding !!
         }
 
     //наш ресивер является BroadcastReceiver
-    private val receiver: BroadcastReceiver = object :BroadcastReceiver(){
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         //и в этом методе мы получчаем интент в котором сидит ВезерДТО
         override fun onReceive(context: Context?, intent: Intent?) {
             //если интент не нулл, если в нем вернем погоду по ключу и отправили в сетВезер...
@@ -46,7 +44,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    lateinit var localWeather :Weather
+    lateinit var localWeather: Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -54,22 +52,27 @@ class DetailsFragment : Fragment() {
             it.getParcelable<Weather>(BUNDLE_KEY)?.let {
                 localWeather = it
                 //поместили широту долготу
-                requireActivity().startService(Intent(requireActivity(), DetailsService::class.java).apply {
-                    putExtra(LATITUDE_EXTRA,it.city.lat)
-                    putExtra(LONGITUDE_EXTRA,it.city.lon)
-                })
+                requireActivity().startService(
+                    Intent(
+                        requireActivity(),
+                        DetailsService::class.java
+                    ).apply {
+                        putExtra(LATITUDE_EXTRA, it.city.lat)
+                        putExtra(LONGITUDE_EXTRA, it.city.lon)
+                    })
             }
         }
         //регистрируем локальный приемник
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, IntentFilter(BROADCAST_ACTION) )
-    //регистрируем глобальный приемник
-    //requireActivity().registerReceiver(receiver, IntentFilter(BROADCAST_ACTION) )
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(receiver, IntentFilter(BROADCAST_ACTION))
+        //регистрируем глобальный приемник
+        //requireActivity().registerReceiver(receiver, IntentFilter(BROADCAST_ACTION) )
     }
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
 
-        with(binding){
-            with(localWeather){
+        with(binding) {
+            with(localWeather) {
                 cityName.text = city.name
                 cityCoordinates.text =
                     "${city.lat} ${city.lon}"
@@ -99,6 +102,6 @@ class DetailsFragment : Fragment() {
 
     companion object {
         //мы передаем бандл и помещаем его в аргументы
-        fun newInstance(bundle:Bundle)=DetailsFragment().apply { arguments = bundle }
+        fun newInstance(bundle: Bundle) = DetailsFragment().apply { arguments = bundle }
     }
 }

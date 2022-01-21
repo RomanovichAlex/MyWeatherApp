@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class WeatherDTO (
+data class WeatherDTO(
     val now: Long,
 
-    @SerializedName( "now_dt")
+    @SerializedName("now_dt")
     val nowDt: String,
 
     val info: Info,
     val fact: Fact,
     val forecast: Forecast
-): Parcelable
+) : Parcelable
 
 @Parcelize
-data class Fact (
+data class Fact(
     @SerializedName("obs_time")
     val obsTime: Long,
 
@@ -49,10 +49,10 @@ data class Fact (
 
     @SerializedName("wind_gust")
     val windGust: Double
-):Parcelable
+) : Parcelable
 
 @Parcelize
-data class Forecast (
+data class Forecast(
     val date: String,
 
     @SerializedName("date_ts")
@@ -69,10 +69,10 @@ data class Forecast (
     val moonText: String,
 
     val parts: List<Part>
-): Parcelable
+) : Parcelable
 
 @Parcelize
-data class Part (
+data class Part(
     @SerializedName("part_name")
     val partName: String,
 
@@ -119,11 +119,11 @@ data class Part (
 
     val daytime: String,
     val polar: Boolean
-): Parcelable
+) : Parcelable
 
 @Parcelize
-data class Info (
+data class Info(
     val url: String,
     val lat: Double,
     val lon: Double
-): Parcelable
+) : Parcelable

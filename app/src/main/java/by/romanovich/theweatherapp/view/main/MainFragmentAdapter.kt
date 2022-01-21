@@ -15,7 +15,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
 
     private var weatherData: List<Weather> = listOf()
 
-//когда меняется погода
+    //когда меняется погода
     fun setWeather(data: List<Weather>) {
         this.weatherData = data
         //присвоить изменения
@@ -50,7 +50,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: Weather) {
-            with(FragmentMainRecyclerCityItemBinding.bind(itemView)){
+            with(FragmentMainRecyclerCityItemBinding.bind(itemView)) {
                 mainFragmentRecyclerItemTextView.text = weather.city.name
                 root.setOnClickListener {
                     listener.onItemClick(weather)

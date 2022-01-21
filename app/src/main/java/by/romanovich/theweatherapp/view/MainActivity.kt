@@ -15,6 +15,7 @@ import by.romanovich.theweatherapp.view.main.MainFragment
 class MainActivity : AppCompatActivity() {
     //вызываем класс олицитворяющий наш макет
     private lateinit var binding: ActivityMainBinding
+
     //для видимости
     val receiver = MyBroadcastReceiver()
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //если нормальный запуск
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance()).commit()
         }
@@ -41,7 +42,10 @@ class MainActivity : AppCompatActivity() {
 
     // можем в любые фрагменты добовлять свои меню
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {//общее меню
-        menuInflater.inflate(R.menu.main_screen_menu, menu)//можно подгружать в разные фрагменты доп. меню
+        menuInflater.inflate(
+            R.menu.main_screen_menu,
+            menu
+        )//можно подгружать в разные фрагменты доп. меню
         return super.onCreateOptionsMenu(menu)
     }
 

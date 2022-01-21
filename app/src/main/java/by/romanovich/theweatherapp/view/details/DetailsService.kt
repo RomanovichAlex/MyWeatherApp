@@ -14,10 +14,9 @@ import java.util.stream.Collectors
 import javax.net.ssl.HttpsURLConnection
 
 
-
 //Работаем в сервисе как в активити, т.е. у нас есть контекст, но нет вью, заточен на работу фоново
 //IntentService отличается от сервис выполняется в новом потоке
-class DetailsService(name:String= ""): IntentService(name) {
+class DetailsService(name: String = "") : IntentService(name) {
 
     //достали широту долготу
     override fun onHandleIntent(intent: Intent?) {
@@ -47,14 +46,15 @@ class DetailsService(name:String= ""): IntentService(name) {
             Gson().fromJson(convertBufferToResult(bufferedReader), WeatherDTO::class.java)
 
 // ричим на весё устройство
-       // sendBroadcast(Intent(BROADCAST_ACTION).apply {
-            //внутрь интента по ключу добавили погоду
-           // putExtra(BUNDLE_KEY_WEATHER, weatherDTO)
+        // sendBroadcast(Intent(BROADCAST_ACTION).apply {
+        //внутрь интента по ключу добавили погоду
+        // putExtra(BUNDLE_KEY_WEATHER, weatherDTO)
         //})
         //кричим локально в рамках приложения
-        LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(Intent(BROADCAST_ACTION).apply {
-            putExtra(BUNDLE_KEY_WEATHER, weatherDTO)
-        })
+        LocalBroadcastManager.getInstance(applicationContext)
+            .sendBroadcast(Intent(BROADCAST_ACTION).apply {
+                putExtra(BUNDLE_KEY_WEATHER, weatherDTO)
+            })
     }
 
 

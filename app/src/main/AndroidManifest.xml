@@ -42,8 +42,8 @@
             android:exported="true"
             android:name=".lesson6.MyBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_AIRPLANE_MODE_CHANGED"/>
-                <action android:name="myAction"/>
+                <action android:name="android.intent.action.ACTION_AIRPLANE_MODE_CHANGED" />
+                <action android:name="myAction" />
             </intent-filter>
         </receiver>
 

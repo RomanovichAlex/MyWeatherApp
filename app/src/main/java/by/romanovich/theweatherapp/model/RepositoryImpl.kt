@@ -1,22 +1,22 @@
 package by.romanovich.theweatherapp.model
 
 //реализация
-class RepositoryImpl:Repository {
-//было
+class RepositoryImpl : Repository {
+    //было
     //override fun getWeatherFromServer(): Weather {
-        //return Weather() }
+    //return Weather() }
     //стало:
     override fun getWeatherFromServer() = Weather()
 
-// методы которые возращают погоду
+    // методы которые возращают погоду
     // было override fun getWeatherFromLocalStorageRus(): List<Weather> {
-       // return getRussianCities()}
+    // return getRussianCities()}
     //стало:
-    override fun getWeatherFromLocalStorageRus()=getRussianCities()
+    override fun getWeatherFromLocalStorageRus() = getRussianCities()
 
-//было
+    //было
     //override fun getWeatherFromLocalStorageWorld(): List<Weather> {
-       // return getWorldCities()}
+    // return getWorldCities()}
     //Стало:
     override fun getWeatherFromLocalStorageWorld() = getWorldCities()
 

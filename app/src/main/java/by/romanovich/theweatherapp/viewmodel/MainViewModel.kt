@@ -26,7 +26,7 @@ class MainViewModel(
     }*/
     fun getLiveData() = liveData
 
-//Вернуть погоду из..
+    //Вернуть погоду из..
     fun getWeatherFromLocalSourceRus() = getWeatherFromLocalServer(true)
 
     fun getWeatherFromLocalSourceWorld() = getWeatherFromLocalServer(false)
@@ -40,20 +40,20 @@ class MainViewModel(
             Thread.sleep(1000)
             //рандом до 40 градусов
             val rand = (1..40).random()
-                // В классе LiveData доступны методы setValue и postValue: первый метод для обновления
-                //данных из основного потока, второй — из рабочего потока.
-                //postValue - синхронный, с главным потоком запрос.Value - асинхронный(если в главном потоке то можно)
-                liveData.postValue(
-                    AppState.Success(
-                        with(repositoryImpl){
+            // В классе LiveData доступны методы setValue и postValue: первый метод для обновления
+            //данных из основного потока, второй — из рабочего потока.
+            //postValue - синхронный, с главным потоком запрос.Value - асинхронный(если в главном потоке то можно)
+            liveData.postValue(
+                AppState.Success(
+                    with(repositoryImpl) {
                         if (isRussian) {
                             getWeatherFromLocalStorageRus()
                         } else {
                             getWeatherFromLocalStorageWorld()
                         }
-                        }
-                    )
+                    }
                 )
+            )
         }.start()
     }
 }

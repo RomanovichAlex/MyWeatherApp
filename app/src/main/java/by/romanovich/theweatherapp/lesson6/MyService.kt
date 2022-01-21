@@ -9,7 +9,7 @@ const val MAIN_SERVICE_KEY_EXTRAS = "key_"
 
 //Работаем в сервисе как в активити, т.е. у нас есть контекст, но нет вью, заточен на работу фоново
 //IntentService отличается от сервис выполняется в новом потоке
-class MyService(name:String= ""): IntentService(name) {
+class MyService(name: String = "") : IntentService(name) {
 
     private val TAG = "mylogs"
 

@@ -2,8 +2,7 @@ package com.gb.kotlin_1728_2_1.lesson2
 
 import android.util.Log
 
-class Car(val name:String,val age:Int) : Any(),FlyingVehicle {
-
+class Car(val name: String, val age: Int) : Any(), FlyingVehicle {
 
 
     override val maxHeight: Float
@@ -18,13 +17,12 @@ class Car(val name:String,val age:Int) : Any(),FlyingVehicle {
     }
 
 
+    fun writeInt(input: Int) = Log.d("mylogs", input.toString())
+    fun writeString(input: String) = Log.d("mylogs", input.toString())
+    fun writeDouble(input: Double) = Log.d("mylogs", input.toString())
 
-    fun writeInt(input:Int) = Log.d("mylogs",input.toString())
-    fun writeString(input:String) = Log.d("mylogs",input.toString())
-    fun writeDouble(input:Double) = Log.d("mylogs",input.toString())
 
-
-    fun <T:Any> write(input:T) = Log.d("mylogs",input.toString())
+    fun <T : Any> write(input: T) = Log.d("mylogs", input.toString())
 
     fun main(): Unit {
         writeInt(1)
@@ -35,28 +33,28 @@ class Car(val name:String,val age:Int) : Any(),FlyingVehicle {
         write(1.0)
         write("1")
 
-        val producer:Producer<Any> = Producer<String>()
+        val producer: Producer<Any> = Producer<String>()
         producer.produce()
     }
 }
 
-fun <T:CharSequence> T.myToString():String{
+fun <T : CharSequence> T.myToString(): String {
     return "бип бип"
 }
 
-fun Any.myToString():String{
+fun Any.myToString(): String {
     return "бип бип"
 }
 
-class Producer<out T>{
+class Producer<out T> {
     private val hack = mutableListOf<T>()
-    fun produce():T{
+    fun produce(): T {
         return hack.last()
     }
 }
 
-class Consumer<in T>{
-    fun consume(param:T){
+class Consumer<in T> {
+    fun consume(param: T) {
 
     }
 }

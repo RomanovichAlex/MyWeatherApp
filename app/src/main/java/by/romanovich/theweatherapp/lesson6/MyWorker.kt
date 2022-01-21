@@ -7,7 +7,8 @@ import androidx.work.WorkerParameters
 
 
 //Если нужно выполнять задачи в фоне с переодичностью до часа
-class MyWorker(context:Context,workerParameters: WorkerParameters):Worker(context,workerParameters) {
+class MyWorker(context: Context, workerParameters: WorkerParameters) :
+    Worker(context, workerParameters) {
     override fun doWork(): Result {
         Log.d("mylogs", "doWork()")
         return Result.success()
