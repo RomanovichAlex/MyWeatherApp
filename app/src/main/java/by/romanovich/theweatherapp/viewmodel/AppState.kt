@@ -14,6 +14,6 @@ sealed class AppState {
    // data class SuccessCity(val weatherData: List<Weather>) : AppState()
    // data class SuccessDetails(val weatherData: WeatherDTO) : AppState()
 
-    data class Error(val error: Throwable) : AppState()
+    data class Error(val error:Int, val code:Int): AppState()
 }
 

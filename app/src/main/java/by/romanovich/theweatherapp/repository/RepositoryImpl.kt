@@ -14,21 +14,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 //реализация
 class RepositoryImpl : RepositoryCitiesList, RepositoryDetails {
 
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(YANDEX_API_URL)
+        //к которому добавляются наши эндпоинты
+        .addConverterFactory(GsonConverterFactory.create(
+            //setLenient- предусматривает косяки с gson
+            GsonBuilder().setLenient().create()
+        ))
+        //бостроили и связали его с нашим интерфейсом запросов
+        .build().create(WeatherApi::class.java)
+
     override fun getWeatherFromLocalStorageRus() = getRussianCities()
 
     override fun getWeatherFromLocalStorageWorld() = getWorldCities()
 
 
     override fun getWeatherFromServer(lat:Double,lon:Double, callback: Callback<WeatherDTO>) {
-       //указываем базовый домен
-        val retrofit = Retrofit.Builder().baseUrl(YANDEX_API_URL)
-           //к которому добавляются наши эндпоинты
-            .addConverterFactory(GsonConverterFactory.create(
-                //setLenient- предусматривает косяки с gson
-                GsonBuilder().setLenient().create()
-            ))
-                //бостроили и связали его с нашим интерфейсом запросов
-            .build().create(WeatherApi::class.java)
         retrofit.getWeather(BuildConfig.WEATHER_API_KEY,lat,lon).enqueue(callback)
     }
 }

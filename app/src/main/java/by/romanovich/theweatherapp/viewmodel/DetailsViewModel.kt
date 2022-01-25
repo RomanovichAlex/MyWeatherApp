@@ -2,6 +2,7 @@ package by.romanovich.theweatherapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.model.WeatherDTO
 import by.romanovich.theweatherapp.model.getDefaultCity
@@ -36,7 +37,7 @@ class DetailsViewModel(
     private val callback = object : Callback<WeatherDTO> {
        //когда не достучался до сервера
        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
-           //TODO hw ("Not yet implemented")
+           liveData.postValue(AppState.Error(R.string.ServerError,0))
        }
        //ответ сервера
        override fun onResponse(call:Call<WeatherDTO>, response: Response<WeatherDTO>) {
@@ -48,7 +49,7 @@ class DetailsViewModel(
                            converterDTOtoModel(it)))
                }
            } else {
-               // TODO HW
+               liveData.postValue(AppState.Error(R.string.ServerError,response.code()))
            }
        }
     }
