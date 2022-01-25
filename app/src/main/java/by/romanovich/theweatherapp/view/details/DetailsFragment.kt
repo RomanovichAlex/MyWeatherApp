@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.romanovich.theweatherapp.databinding.FragmentDetailsBinding
@@ -11,6 +12,10 @@ import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.DetailsViewModel
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.load
+import coil.request.ImageRequest
 
 
 class DetailsFragment : Fragment() {
@@ -86,11 +91,28 @@ class DetailsFragment : Fragment() {
 
                 Picasso.get()
                     .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-                    .into( headerIcon)
+                    .into( headerIcon)*/
 
-                headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")*/
+                headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+
+                weatherIcon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
+
             }
         }
+    }
+
+    private fun ImageView.loadUrl(url: String) {
+
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry { add(SvgDecoder(this@loadUrl.context)) }
+            .build()
+
+        val request = ImageRequest.Builder(this.context)
+            .data(url)
+            .target(this)
+            .build()
+
+        imageLoader.enqueue(request)
     }
 
 

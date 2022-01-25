@@ -8,7 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class Weather(
     val city: City = getDefaultCity(),
     val temperature: Int = 20,
-    val feelsLike: Int = 20
+    val feelsLike: Int = 20,
+    val icon:String="skc_n"
 ) : Parcelable
 
 //название города, долгота и широта
