@@ -6,13 +6,9 @@ import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.model.WeatherDTO
 import by.romanovich.theweatherapp.model.getDefaultCity
 import by.romanovich.theweatherapp.repository.RepositoryImpl
-import by.romanovich.theweatherapp.utils.YANDEX_API_URL
-import by.romanovich.theweatherapp.utils.YANDEX_API_URL_END_POINT
-import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetailsViewModel(
     //создали контейнер liveData с состоянием приложения AppState и на этот контейнер подписалась фрагмент(Вьюшка)
@@ -27,8 +23,8 @@ class DetailsViewModel(
 
     fun getWeatherFromRemoteServer(lat:Double,lon:Double) {
         liveData.postValue(AppState.Loading(0))
-        repositoryImpl.getWeatherFromServer(YANDEX_API_URL + YANDEX_API_URL_END_POINT +"?lat=${
-           lat}&lon=${lon}",callback)
+        //ретрофит работает по принципу дай мне поля запроса
+        repositoryImpl.getWeatherFromServer(lat,lon, callback)
     }
 
 
@@ -37,33 +33,23 @@ class DetailsViewModel(
         return listOf(Weather(getDefaultCity(),weatherDTO.fact.temp.toInt(),weatherDTO.fact.feelsLike.toInt()))
     }
 
-    private val callback = object : Callback {
+    private val callback = object : Callback<WeatherDTO> {
        //когда не достучался до сервера
-       override fun onFailure(call: Call, e: IOException) {
-           TODO("Not yet implemented")
+       override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
+           //TODO hw ("Not yet implemented")
        }
        //ответ сервера
-       override fun onResponse(call: Call, response: Response) {
+       override fun onResponse(call:Call<WeatherDTO>, response: Response<WeatherDTO>) {
            if (response.isSuccessful) {
                //если ответ бади не нулл то мы его переводим в строку и парсим в везер дто
                response.body()?.let {
-                   //выполняем сет везер в главном потоке
-                   val json = it.string()
                    liveData.postValue(
                        AppState.Success(
-                           converterDTOtoModel(
-                               Gson().fromJson(
-                                   json,
-                                   WeatherDTO::class.java
-                               )
-                           )
-                       )
-                   )
-
+                           converterDTOtoModel(it)))
                }
            } else {
                // TODO HW
            }
        }
-   }
+    }
 }

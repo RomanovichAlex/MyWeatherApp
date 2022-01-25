@@ -1,8 +1,8 @@
 package by.romanovich.theweatherapp.repository
 
-import okhttp3.Callback
+import by.romanovich.theweatherapp.model.WeatherDTO
 //получает детализированную погоду с сервера
 interface RepositoryDetails {
     //url запрос, callback ответ
-    fun getWeatherFromServer(url:String,callback: Callback)
+    fun getWeatherFromServer(lat:Double,lon:Double,callback: retrofit2.Callback<WeatherDTO>)
 }
