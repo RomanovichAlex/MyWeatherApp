@@ -2,7 +2,7 @@ package by.romanovich.theweatherapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import by.romanovich.theweatherapp.model.RepositoryImpl
+import by.romanovich.theweatherapp.repository.RepositoryImpl
 
 
 //наследуется от ViewModel. Тип объекта, хранящий в себе LiveData, — <AppState (в качестве примера).
