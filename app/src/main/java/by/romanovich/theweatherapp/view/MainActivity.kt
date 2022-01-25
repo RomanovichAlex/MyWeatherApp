@@ -9,6 +9,10 @@ import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.ActivityMainBinding
 import by.romanovich.theweatherapp.lesson6.MyBroadcastReceiver
 import by.romanovich.theweatherapp.lesson6.ThreadsFragment
+import by.romanovich.theweatherapp.model.WeatherDTO
+import by.romanovich.theweatherapp.utils.BUNDLE_KEY
+import by.romanovich.theweatherapp.utils.BUNDLE_KEY_WEATHER
+import by.romanovich.theweatherapp.view.details.DetailsFragment
 import by.romanovich.theweatherapp.view.main.MainFragment
 
 
@@ -27,39 +31,54 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //если нормальный запуск
+        if (intent.getParcelableExtra<WeatherDTO>(BUNDLE_KEY_WEATHER) != null) {
+            supportFragmentManager.beginTransaction()
+                .add(
+                    R.id.container,
+                    DetailsFragment.newInstance(
+                        Bundle().apply {
+                            putParcelable(
+                                BUNDLE_KEY,
+                                intent.getParcelableExtra<WeatherDTO>(BUNDLE_KEY_WEATHER)
+                            )
+                        }
+                    ))
+                .addToBackStack("").commit()
+        }
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance()).commit()
         }
     }
 
-    //закрываем слушателя
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(receiver)
-    }
+        //закрываем слушателя
+        override fun onDestroy() {
+            super.onDestroy()
+            unregisterReceiver(receiver)
+        }
 
 
-    // можем в любые фрагменты добовлять свои меню
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {//общее меню
-        menuInflater.inflate(
-            R.menu.main_screen_menu,
-            menu
-        )//можно подгружать в разные фрагменты доп. меню
-        return super.onCreateOptionsMenu(menu)
-    }
+        // можем в любые фрагменты добовлять свои меню
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {//общее меню
+            menuInflater.inflate(
+                R.menu.main_screen_menu,
+                menu
+            )//можно подгружать в разные фрагменты доп. меню
+            return super.onCreateOptionsMenu(menu)
+        }
 
-    //
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_threads -> {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.container, ThreadsFragment.newInstance()).addToBackStack("").commit()
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
+        //
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            return when (item.itemId) {
+                R.id.menu_threads -> {
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.container, ThreadsFragment.newInstance()).addToBackStack("")
+                        .commit()
+                    true
+                }
+                else -> {
+                    super.onOptionsItemSelected(item)
+                }
             }
         }
     }
-}

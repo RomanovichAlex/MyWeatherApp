@@ -25,7 +25,7 @@ class WeatherLoader(private val onWeatherLoaded: OnWeatherLoaded) {
                 requestMethod = "GET"
                 readTimeout = 2000
                 //задали заголовок, передаем ключ апи и личный ключ
-                addRequestProperty(API_KEY, BuildConfig.WEATHER_API_KEY)
+                addRequestProperty(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
             }
             //в буфере жсон данные, конвертируем в дто из строки. открываем на чтение с считываем в буфер
             val bufferedReader =

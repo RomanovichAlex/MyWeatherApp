@@ -3,23 +3,20 @@ package by.romanovich.theweatherapp.view.details
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import by.romanovich.theweatherapp.BuildConfig
 import by.romanovich.theweatherapp.databinding.FragmentDetailsBinding
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.model.WeatherDTO
-import by.romanovich.theweatherapp.utils.BUNDLE_KEY
-
-
-const val BUNDLE_KEY_WEATHER = "key_weather_dto"
-const val BROADCAST_ACTION = "BROADCAST_KEY"
-const val LATITUDE_EXTRA = "Latitude"
-const val LONGITUDE_EXTRA = "Longitude"
+import by.romanovich.theweatherapp.utils.*
+import com.google.gson.Gson
+import okhttp3.*
+import java.io.IOException
 
 
 class DetailsFragment : Fragment() {
@@ -43,8 +40,56 @@ class DetailsFragment : Fragment() {
             }
         }
     }
+//создаем клиент
+    private var client: OkHttpClient? = null
 
-    lateinit var localWeather: Weather
+    private fun getWeather(){
+        if(client==null)
+           client = OkHttpClient()
+
+        //настраиваем билдер
+        val builder=Request.Builder().apply {
+            //заголовок
+            header(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
+            //адрес
+            url(YANDEX_API_URL+YANDEX_API_URL_END_POINT+"?lat=${localWeather.city.lat}&lon=${localWeather
+                .city.lon}")}
+            //создаем настроеный запрос и переводим в реквест
+        val request = builder.build()
+//если клиент не нулл новый вызов происходит на базе реквеста
+        val call = client?.newCall(request)
+        /*Thread {
+            TASK 1
+            val response = call?.execute()//ждем пока выполнится задача1,эксекют это блокирующий поток
+            Задача 2 - потом выполняем вторую задачу
+        }.start()
+        val response = call?.execute() // ошибка с networkOnMainThreadEx
+*/
+
+        call?.enqueue(object : Callback{
+            //когда не достучался до сервера
+            override fun onFailure(call: Call, e: IOException) {
+                TODO("Not yet implemented")
+            }
+//ответ сервера
+            override fun onResponse(call: Call, response: Response) {
+                if(response.isSuccessful) {
+                    //если ответ бади не нулл то мы его переводим в строку и парсим в везер дто
+                    response.body()?.let{
+                        //выполняем сет везер в главном потоке
+                        val json = it.string()
+                        requireActivity().runOnUiThread {
+                            setWeatherData(Gson().fromJson(json, WeatherDTO::class.java))
+                        }
+                    }
+                }else{
+                        //TODO HW
+                }
+            }
+        })
+    }
+
+    private lateinit var localWeather: Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,22 +97,11 @@ class DetailsFragment : Fragment() {
             it.getParcelable<Weather>(BUNDLE_KEY)?.let {
                 localWeather = it
                 //поместили широту долготу
-                requireActivity().startService(
-                    Intent(
-                        requireActivity(),
-                        DetailsService::class.java
-                    ).apply {
-                        putExtra(LATITUDE_EXTRA, it.city.lat)
-                        putExtra(LONGITUDE_EXTRA, it.city.lon)
-                    })
+                getWeather()
+                    }
             }
         }
-        //регистрируем локальный приемник
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(receiver, IntentFilter(BROADCAST_ACTION))
-        //регистрируем глобальный приемник
-        //requireActivity().registerReceiver(receiver, IntentFilter(BROADCAST_ACTION) )
-    }
+
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
 

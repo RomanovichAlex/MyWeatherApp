@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import by.romanovich.theweatherapp.BuildConfig
 import by.romanovich.theweatherapp.model.WeatherDTO
-import by.romanovich.theweatherapp.utils.API_KEY
+import by.romanovich.theweatherapp.utils.*
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -37,7 +37,7 @@ class DetailsService(name: String = "") : IntentService(name) {
             requestMethod = "GET"
             readTimeout = 2000
             //задали заголовок, передаем ключ апи и личный ключ
-            addRequestProperty(API_KEY, BuildConfig.WEATHER_API_KEY)
+            addRequestProperty(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
         }
         //в буфере жсон данные, конвертируем в дто из строки. открываем на чтение с считываем в буфер
         val bufferedReader = BufferedReader(InputStreamReader(httpsURLConnection.inputStream))
