@@ -54,6 +54,7 @@ class DetailsFragment : Fragment() {
     private lateinit var localWeather: Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //вешаем слушателя в инициализацию
         viewModel.getLiveData().observe(viewLifecycleOwner,{
             renderData(it)
 
@@ -77,6 +78,17 @@ class DetailsFragment : Fragment() {
                     "${city.lat} ${city.lon}"
                 temperatureValue.text = "${weather.temperature}"
                 feelsLikeValue.text = "${weather.feelsLike}"
+
+
+                /*Glide.with(headerIcon.context)
+                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                    .into( headerIcon)
+
+                Picasso.get()
+                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                    .into( headerIcon)
+
+                headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")*/
             }
         }
     }

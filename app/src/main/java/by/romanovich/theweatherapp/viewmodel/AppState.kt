@@ -11,7 +11,8 @@ sealed class AppState {
 
     //ответ сервера в случае успеха получим погоду
     data class Success(val weatherData: List<Weather>) : AppState()
-
+   // data class SuccessCity(val weatherData: List<Weather>) : AppState()
+   // data class SuccessDetails(val weatherData: WeatherDTO) : AppState()
 
     data class Error(val error: Throwable) : AppState()
 }
