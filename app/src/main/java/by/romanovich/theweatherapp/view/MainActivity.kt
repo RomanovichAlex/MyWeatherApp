@@ -1,7 +1,9 @@
 package by.romanovich.theweatherapp.view
 //глянуть 2 лекция 2.28 мин !!! объяснение работы приложения
 //глянуть 3 лекция 4.28 мин !!! объяснение работы приложения
+import android.content.Context
 import android.os.Bundle
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +51,22 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance()).commit()
         }
+//обозначает что доступно только в рамках приложения придумываем таг
+        val sp = getSharedPreferences("TAG", Context.MODE_PRIVATE)
+// работает только на уровне активити таг - activityP
+        val activityP = getPreferences(Context.MODE_PRIVATE)
+        //на уровне приложения - вместо тэга пэкэдж найм имя приложения
+        val appP = getDefaultSharedPreferences(this)
+
+        //чтобы прочитать по ключу, получаем
+appP.getString("key","")
+
+        //чтобы записать строку по ключу
+        val editor = appP.edit()
+            editor.putString("key","value").apply()
+        editor.putString("key2","value2").apply()
+        editor.putBoolean("key3",true).apply()
+editor.apply()
     }
 
         //закрываем слушателя
