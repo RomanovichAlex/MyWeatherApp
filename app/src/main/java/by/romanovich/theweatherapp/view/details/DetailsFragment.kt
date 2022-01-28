@@ -74,9 +74,17 @@ class DetailsFragment : Fragment() {
     }
 
 
+
+    // отрисовываем погоду
     private fun setWeatherData(weather: Weather) {
 
+        //добавить кнопку
         with(binding) {
+           // weatherIcon.setOnClickListener {
+            weather.city = localWeather.city
+            viewModel.saveWeather(weather)
+            //}
+
             with(localWeather) {
                 cityName.text = city.name
                 cityCoordinates.text =
@@ -94,9 +102,7 @@ class DetailsFragment : Fragment() {
                     .into( headerIcon)*/
 
                 headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-
                 weatherIcon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
-
             }
         }
     }

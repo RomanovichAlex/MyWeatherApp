@@ -15,5 +15,6 @@
     <string name="Threads">Потоки</string>
     <string name="calculate">calculate</string>
     <string name="ServerError">ServerError</string>
+    <string name="history">History</string>
 
 </resources>

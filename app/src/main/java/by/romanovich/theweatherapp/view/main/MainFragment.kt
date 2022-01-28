@@ -34,8 +34,8 @@ class MainFragment : Fragment(), OnMyItemClickListener {
 // в мфа передаем
     private val adapter = MainFragmentAdapter(this)*/
     //Стало by lazy— ленивая инициализация
-    private val adapter: MainFragmentAdapter by lazy {
-        MainFragmentAdapter(this)
+    private val adapter: CitiesAdapter by lazy {
+        CitiesAdapter(this)
     }
 
 

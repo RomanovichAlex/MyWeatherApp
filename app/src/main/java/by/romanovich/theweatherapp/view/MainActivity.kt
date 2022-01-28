@@ -12,10 +12,10 @@ import by.romanovich.theweatherapp.databinding.ActivityMainBinding
 import by.romanovich.theweatherapp.lesson6.MyBroadcastReceiver
 import by.romanovich.theweatherapp.lesson6.ThreadsFragment
 import by.romanovich.theweatherapp.model.WeatherDTO
-import by.romanovich.theweatherapp.room.App
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY_WEATHER
 import by.romanovich.theweatherapp.view.details.DetailsFragment
+import by.romanovich.theweatherapp.view.history.HistoryFragment
 import by.romanovich.theweatherapp.view.main.MainFragment
 
 
@@ -73,7 +73,7 @@ editor.apply()
 
         //(applicationContext as App).
         //вернем список погоды
-        val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
+       // val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
 
     }
 
@@ -106,8 +106,12 @@ editor.apply()
                         .add(R.id.container, ThreadsFragment.newInstance()).addToBackStack("")
                         .commit()
                     true
-                }
-                else -> {
+                }R.id.menu_history -> {
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.container, HistoryFragment.newInstance()).addToBackStack("")
+                        .commit()
+                    true
+                }else -> {
                     super.onOptionsItemSelected(item)
                 }
             }

@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 //город температура и как чувствуется с данными поумолчанию, просим наш Weather передать черезБандл, из фрагмента маин в детаилс
 @Parcelize
 data class Weather(
-    val city: City = getDefaultCity(),
+    var city: City = getDefaultCity(),
     val temperature: Int = 20,
     val feelsLike: Int = 20,
     val icon:String="skc_n"

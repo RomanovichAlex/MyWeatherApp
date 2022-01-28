@@ -10,8 +10,8 @@ import by.romanovich.theweatherapp.model.Weather
 
 
 //MainFragmentAdapter это адаптер для RecyclerView, умеющий принимать клики
-class MainFragmentAdapter(val listener: OnMyItemClickListener) :
-    RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
+class CitiesAdapter(val listener: OnMyItemClickListener) :
+    RecyclerView.Adapter<CitiesAdapter.MainViewHolder>() {
 
     private var weatherData: List<Weather> = listOf()
 
@@ -26,7 +26,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MainFragmentAdapter.MainViewHolder {
+    ): CitiesAdapter.MainViewHolder{
         val binding: FragmentMainRecyclerCityItemBinding =
             FragmentMainRecyclerCityItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -38,7 +38,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
     }
 
     //если список не влазит на экран переписываем список новыми данными, поэтому используем RecyclerView а не ЛистВью
-    override fun onBindViewHolder(holder: MainFragmentAdapter.MainViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CitiesAdapter.MainViewHolder, position: Int) {
         holder.bind(this.weatherData[position])
     }
 
@@ -47,10 +47,9 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
         return weatherData.size
     }
 
-
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: Weather) {
-            with(FragmentMainRecyclerCityItemBinding.bind(itemView)) {
+            with(FragmentMainRecyclerCityItemBinding.bind(itemView)){
                 mainFragmentRecyclerItemTextView.text = weather.city.name
                 root.setOnClickListener {
                     listener.onItemClick(weather)
@@ -63,5 +62,6 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener) :
                 }
             }
         }
+
     }
 }

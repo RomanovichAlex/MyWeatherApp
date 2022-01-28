@@ -2,8 +2,6 @@ package by.romanovich.theweatherapp.repository
 
 import by.romanovich.theweatherapp.BuildConfig
 import by.romanovich.theweatherapp.model.WeatherDTO
-import by.romanovich.theweatherapp.model.getRussianCities
-import by.romanovich.theweatherapp.model.getWorldCities
 import by.romanovich.theweatherapp.utils.YANDEX_API_URL
 import com.google.gson.GsonBuilder
 import retrofit2.Callback
@@ -12,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 //реализация
-class RepositoryImpl : RepositoryCitiesList, RepositoryDetails {
+class RepositoryRemoteImpl : RepositoryDetails {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(YANDEX_API_URL)
@@ -23,11 +21,6 @@ class RepositoryImpl : RepositoryCitiesList, RepositoryDetails {
         ))
         //бостроили и связали его с нашим интерфейсом запросов
         .build().create(WeatherApi::class.java)
-
-    override fun getWeatherFromLocalStorageRus() = getRussianCities()
-
-    override fun getWeatherFromLocalStorageWorld() = getWorldCities()
-
 
     override fun getWeatherFromServer(lat:Double,lon:Double, callback: Callback<WeatherDTO>) {
         retrofit.getWeather(BuildConfig.WEATHER_API_KEY,lat,lon).enqueue(callback)

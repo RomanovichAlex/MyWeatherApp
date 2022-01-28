@@ -2,7 +2,7 @@ package by.romanovich.theweatherapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import by.romanovich.theweatherapp.repository.RepositoryImpl
+import by.romanovich.theweatherapp.repository.RepositoryLocalImpl
 
 
 //наследуется от ViewModel. Тип объекта, хранящий в себе LiveData, — <AppState (в качестве примера).
@@ -16,8 +16,8 @@ class MainViewModel(
     //создали контейнер liveData с состоянием приложения AppState и на этот контейнер подписалась фрагмент(Вьюшка)
     private val liveData: MutableLiveData<AppState> = MutableLiveData(),
 ) : ViewModel() {
-    private val repositoryImpl: RepositoryImpl by lazy {
-        RepositoryImpl()
+    private val repositoryLocalImpl: RepositoryLocalImpl by lazy {
+        RepositoryLocalImpl()
     }
 
     /*//функция возврата LiveData типа <AppState>
@@ -45,7 +45,7 @@ class MainViewModel(
             //postValue - синхронный, с главным потоком запрос.Value - асинхронный(если в главном потоке то можно)
             liveData.postValue(
                 AppState.Success(
-                    with(repositoryImpl) {
+                    with(repositoryLocalImpl) {
                         if (isRussian) {
                             getWeatherFromLocalStorageRus()
                         } else {

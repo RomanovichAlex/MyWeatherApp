@@ -6,7 +6,8 @@ import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.model.WeatherDTO
 import by.romanovich.theweatherapp.model.getDefaultCity
-import by.romanovich.theweatherapp.repository.RepositoryImpl
+import by.romanovich.theweatherapp.repository.RepositoryLocalImpl
+import by.romanovich.theweatherapp.repository.RepositoryRemoteImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,18 +15,27 @@ import retrofit2.Response
 class DetailsViewModel(
     //создали контейнер liveData с состоянием приложения AppState и на этот контейнер подписалась фрагмент(Вьюшка)
     private val liveData: MutableLiveData<AppState> = MutableLiveData(),
+
+    private val repositoryLocalImpl: RepositoryLocalImpl = RepositoryLocalImpl()
     ) : ViewModel() {
-    private val repositoryImpl: RepositoryImpl by lazy {
-        RepositoryImpl()
+
+
+
+    private val repositoryRemoteImpl: RepositoryRemoteImpl by lazy {
+        RepositoryRemoteImpl()
     }
 
     fun getLiveData() = liveData
+
+    fun saveWeather(weather: Weather){
+        repositoryLocalImpl.saveWeather(weather)
+    }
 
 
     fun getWeatherFromRemoteServer(lat:Double,lon:Double) {
         liveData.postValue(AppState.Loading(0))
         //ретрофит работает по принципу дай мне поля запроса
-        repositoryImpl.getWeatherFromServer(lat,lon, callback)
+        repositoryRemoteImpl.getWeatherFromServer(lat,lon, callback)
     }
 
 
