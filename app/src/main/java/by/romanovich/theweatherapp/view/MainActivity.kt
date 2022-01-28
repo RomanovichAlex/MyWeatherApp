@@ -12,6 +12,7 @@ import by.romanovich.theweatherapp.databinding.ActivityMainBinding
 import by.romanovich.theweatherapp.lesson6.MyBroadcastReceiver
 import by.romanovich.theweatherapp.lesson6.ThreadsFragment
 import by.romanovich.theweatherapp.model.WeatherDTO
+import by.romanovich.theweatherapp.room.App
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY_WEATHER
 import by.romanovich.theweatherapp.view.details.DetailsFragment
@@ -67,7 +68,19 @@ appP.getString("key","")
         editor.putString("key2","value2").apply()
         editor.putBoolean("key3",true).apply()
 editor.apply()
+
+
+
+        //(applicationContext as App).
+        //вернем список погоды
+        val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
+
     }
+
+
+
+
+
 
         //закрываем слушателя
         override fun onDestroy() {
