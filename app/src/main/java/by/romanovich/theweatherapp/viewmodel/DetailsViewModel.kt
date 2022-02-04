@@ -47,7 +47,7 @@ class DetailsViewModel(
     private val callback = object : Callback<WeatherDTO> {
        //когда не достучался до сервера
        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
-           liveData.postValue(AppState.Error(R.string.ServerError,0))
+           liveData.postValue(AppState.Error(R.string.errorOnServer,0))
        }
        //ответ сервера
        override fun onResponse(call:Call<WeatherDTO>, response: Response<WeatherDTO>) {
@@ -59,7 +59,7 @@ class DetailsViewModel(
                            converterDTOtoModel(it)))
                }
            } else {
-               liveData.postValue(AppState.Error(R.string.ServerError,response.code()))
+               liveData.postValue(AppState.Error(R.string.codeError,response.code()))
            }
        }
     }

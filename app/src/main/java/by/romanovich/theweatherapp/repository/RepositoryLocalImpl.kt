@@ -25,9 +25,11 @@ class RepositoryLocalImpl : RepositoryCitiesList, RepositoryHistoryWeather {
     }
 
     override fun saveWeather(weather: Weather) {
-        App.getHistoryWeatherDao().insert(
-            convertWeatherToHistoryWeatherEntity(weather)
-        )
+        Thread {
+            App.getHistoryWeatherDao().insert(
+                convertWeatherToHistoryWeatherEntity(weather)
+            )
+        }.start()
     }
 
 
@@ -42,6 +44,7 @@ class RepositoryLocalImpl : RepositoryCitiesList, RepositoryHistoryWeather {
             )
         }
         return newListWeather*/
+
 
 //заменили в entityList списки на Weather и вернули entityList
         return entityList.map {
@@ -61,4 +64,10 @@ class RepositoryLocalImpl : RepositoryCitiesList, RepositoryHistoryWeather {
             weather.feelsLike,
             weather.icon
         )
+
+    /*fun delete(weather: Weather) {
+        App.getHistoryWeatherDao().delete(
+            convertWeatherToHistoryWeatherEntity(weather)
+        )
+    }*/
 }

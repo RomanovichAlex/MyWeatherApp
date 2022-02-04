@@ -16,5 +16,12 @@
     <string name="calculate">calculate</string>
     <string name="ServerError">ServerError</string>
     <string name="history">History</string>
+    <string name="exit">edit</string>
+    <string name="errorOnServer">strings</string>
+    <string name="codeError">strings</string>
+    <string name="ok" type="id" />
+    <string name="codeTextView" type="id">strings</string>
+
+
 
 </resources>

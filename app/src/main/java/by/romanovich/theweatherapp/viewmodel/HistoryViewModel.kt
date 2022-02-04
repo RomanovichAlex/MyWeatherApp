@@ -17,15 +17,19 @@ class HistoryViewModel(
 
     //вернуть всю историю
     fun getAllHistory() {
-        //Thread {
+        Thread {
             //liveData.postValue(AppState.Loading(0))
             // из локального реп получаем все записи
             val listWeather = repositoryLocalImpl.getAllHistoryWeather()
             //и помещаем в liveData
             liveData.postValue(AppState.Success(listWeather))
-       // }.start()
+       }.start()
 
     }
 
-
+   /* fun delete(weather: Weather){
+        repositoryLocalImpl.delete(weather)
+        val listWeather = repositoryLocalImpl.getAllHistoryWeather()
+        liveData.postValue(AppState.Success(listWeather))
+    }*/
 }

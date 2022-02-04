@@ -32,7 +32,7 @@ class App: Application() {
                         //то создаём базу данных на уровне апликатион!, ссылка на бд и строим нашу бд нужен контекст и имя дата класса и имя бд
                     db = Room.databaseBuilder(appInstance!!.applicationContext,HistoryDatabase::class.java,DB_NAME)
                         //мы уверены что ничего плохого не случится тогда
-                        .allowMainThreadQueries() // TODO нужно убрать эту строку
+                        //.allowMainThreadQueries() // TODO нужно убрать эту строку
                             //и из нее получаем
                         .build()
                 }

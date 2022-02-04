@@ -1,9 +1,11 @@
 package by.romanovich.theweatherapp.view.main
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +16,6 @@ import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.view.details.DetailsFragment
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 
 
 class MainFragment : Fragment(), OnMyItemClickListener {
@@ -39,9 +40,6 @@ class MainFragment : Fragment(), OnMyItemClickListener {
     }
 
 
-    // для отображения по умолчанию русских городов
-    private var isRussian = true
-
     //во вью делаем ссылку на вью модел
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -60,15 +58,17 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         //сообщаем об изминениях в renderData
         //LifecycleOwner-встроенный во фрагмент(и в активити то же)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppState> { renderData(it) })
-        viewModel.getWeatherFromLocalSourceRus()
     }
 
     private fun initView() {
+        var isRussian = requireActivity().getPreferences(Activity.MODE_PRIVATE).getBoolean("isRussian",true)
+        initLocation(isRussian)
         with(binding) {
             mainFragmentRecyclerView.adapter = adapter
             //по нажатию на кнопку русские города в мировые
             mainFragmentFAB.setOnClickListener {
-                sentRequest()
+                isRussian = !isRussian
+                initLocation(isRussian)
             }
         }
     }
@@ -83,16 +83,19 @@ class MainFragment : Fragment(), OnMyItemClickListener {
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         }
     }*/
-    private fun sentRequest() {
-        isRussian = ! isRussian
-        with(binding) {
-            if (isRussian) {
-                viewModel.getWeatherFromLocalSourceRus()
-                mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-            } else {
-                viewModel.getWeatherFromLocalSourceWorld()
-                mainFragmentFAB.setImageResource(R.drawable.ic_earth)
-            }
+    private fun initLocation(isRussian:Boolean) {
+        with(viewModel){
+            if (isRussian) getWeatherFromLocalSourceRus()
+            else getWeatherFromLocalSourceWorld()
+        }
+        if (isRussian) {
+            viewModel.getWeatherFromLocalSourceRus()
+            binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+            requireActivity().getPreferences(Activity.MODE_PRIVATE).edit().putBoolean("isRussian", true).apply()
+        } else {
+            viewModel.getWeatherFromLocalSourceWorld()
+            binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+            requireActivity().getPreferences(Activity.MODE_PRIVATE).edit().putBoolean("isRussian", false).apply()
         }
     }
 
@@ -121,10 +124,8 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         with(binding) {
             when (appState) {
                 is AppState.Error -> {
-                    mainFragmentLoadingLayout.visibility = View.GONE
-                    root.showSnackBar("R.string.Error", "R.string.retryAgein",
-                        { viewModel.getWeatherFromLocalSourceRus() }, Snackbar.LENGTH_INDEFINITE
-                    )
+                    Toast.makeText(requireContext(),appState.error, Toast.LENGTH_SHORT).show()
+                    initView()
                     /* Snackbar.make(root, getString(R.string.Error), Snackbar.LENGTH_LONG)
                          .setAction(R.string.retryAgein) {
                              sentRequest()
@@ -136,17 +137,14 @@ class MainFragment : Fragment(), OnMyItemClickListener {
                 is AppState.Success -> {
                     mainFragmentLoadingLayout.visibility = View.GONE
                     adapter.setWeather(appState.weatherData)
-                    root.showSnackBarWithoutAction(
-                        getString(R.string.Success_show),
-                        Snackbar.LENGTH_LONG
-                    )
+                    //root.showSnackBarWithoutAction(getString(R.string.Success_show), Snackbar.LENGTH_LONG)
                 }
             }
         }
     }
 
-    //View-как санстрейн лайаут как ресивер,
-    private fun View.showSnackBarWithoutAction(text: String, length: Int) {
+
+    /*private fun View.showSnackBarWithoutAction(text: String, length: Int) {
         Snackbar.make(this, text, length).show()
     }
 
@@ -157,7 +155,7 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         length: Int = Snackbar.LENGTH_INDEFINITE
     ) {
         Snackbar.make(this, text, length).setAction(actionText, action).show()
-    }
+    }*/
 
 
     // Важно! Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого
