@@ -8,7 +8,6 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdk 31
-    buildToolsVersion "30.0.3"
 
     //подключили Binding
     buildFeatures {
