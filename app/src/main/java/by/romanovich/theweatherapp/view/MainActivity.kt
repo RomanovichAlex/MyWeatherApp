@@ -11,6 +11,7 @@ import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.ActivityMainBinding
 import by.romanovich.theweatherapp.lesson6.MyBroadcastReceiver
 import by.romanovich.theweatherapp.lesson6.ThreadsFragment
+import by.romanovich.theweatherapp.lesson9.ContentProviderFragment
 import by.romanovich.theweatherapp.model.WeatherDTO
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY_WEATHER
@@ -109,6 +110,11 @@ editor.apply()
                 }R.id.menu_history -> {
                     supportFragmentManager.beginTransaction()
                         .add(R.id.container, HistoryFragment.newInstance()).addToBackStack("")
+                        .commit()
+                    true
+                }R.id.menu_content -> {
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.container, ContentProviderFragment.newInstance()).addToBackStack("")
                         .commit()
                     true
                 }else -> {

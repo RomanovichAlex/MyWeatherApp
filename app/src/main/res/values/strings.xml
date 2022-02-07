@@ -21,7 +21,7 @@
     <string name="codeError">strings</string>
     <string name="ok" type="id" />
     <string name="codeTextView" type="id">strings</string>
-
+    <string name="content">Content</string>
 
 
 </resources>
