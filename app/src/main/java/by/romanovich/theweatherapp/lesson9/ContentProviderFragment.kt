@@ -1,7 +1,11 @@
 package by.romanovich.theweatherapp.lesson9
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.ContentResolver
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -9,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.romanovich.theweatherapp.databinding.FragmentContentProviderBinding
@@ -60,9 +63,10 @@ class ContentProviderFragment : Fragment() {
     }
 
     //запрашиваем пермишонс
-    val REQUEST_CODE = 999
+    val REQUEST_CODE_CONTACTS = 999
+    val REQUEST_CODE_CALL = 998
     private fun myRequestPermission(){
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE)
+        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_CONTACTS)
     }
 
     override fun onRequestPermissionsResult(
@@ -71,7 +75,7 @@ class ContentProviderFragment : Fragment() {
         grantResults: IntArray
     ) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE_CONTACTS) {
 
             when {
                     //если результат для нашего первого пемишиона выдан
@@ -86,6 +90,18 @@ class ContentProviderFragment : Fragment() {
                 //если отказали
                 else -> {
                     Log.d("", "КОНЕЦ")
+                }
+            }
+        }else if (requestCode == REQUEST_CODE_CALL) {
+            when {
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {
+                    makeCall()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS) -> {
+                    showDialog()
+                }
+                else -> {
+                    makeCall()
                 }
             }
         }
@@ -113,18 +129,52 @@ class ContentProviderFragment : Fragment() {
                     //получаем имя
                     //мы у курсора спрашиваем индекс для имени
                     val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                    addView(name)
+                    val contactId =
+                        cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+                    val number = getNumberFromID(contentResolver,contactId)
+                    addView(name, number)
                 }
             }
             cursor?.close()
         }
     }
 
-    private fun addView(name:String) {
+    private fun getNumberFromID(cr: ContentResolver, contactId: String) :String {
+        val phones = cr.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null
+        )
+        var number: String = "none"
+        phones?.let { cursor ->
+            while (cursor.moveToNext()) {
+                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            }
+        }
+        return number
+    }
+
+    private fun addView(name:String,number:String) {
         binding.containerForContacts.addView(TextView(requireContext()).apply {
-            text = name
+            text = "$name:$number"
             textSize = 30f
+            setOnClickListener {
+                numberCurrent =  number
+                makeCall()
+            }
         })
+    }
+
+    private var numberCurrent: String = "none"
+    private fun makeCall() {
+        if(ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CALL_PHONE
+            ) == PackageManager.PERMISSION_GRANTED){
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$numberCurrent"))
+            startActivity(intent)
+        }else{
+            requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL)
+        }
     }
 
 

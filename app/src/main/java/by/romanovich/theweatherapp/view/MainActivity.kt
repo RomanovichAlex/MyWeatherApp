@@ -23,6 +23,7 @@ import by.romanovich.theweatherapp.view.main.MainFragment
 class MainActivity : AppCompatActivity() {
     //вызываем класс олицитворяющий наш макет
     private lateinit var binding: ActivityMainBinding
+    private lateinit var number: String
 
     //для видимости
     val receiver = MyBroadcastReceiver()
@@ -70,11 +71,6 @@ appP.getString("key","")
         editor.putBoolean("key3",true).apply()
 editor.apply()
 
-
-
-        //(applicationContext as App).
-        //вернем список погоды
-       // val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
 
     }
 
