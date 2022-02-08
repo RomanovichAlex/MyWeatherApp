@@ -49,7 +49,7 @@ class RepositoryLocalImpl : RepositoryCitiesList, RepositoryHistoryWeather {
 //заменили в entityList списки на Weather и вернули entityList
         return entityList.map {
             Weather(
-                City(it.city, 0.0, 0.0), it.temperature, it.feelsLike, it.icon
+                City(it.name, 0.0, 0.0), it.temperature, it.feelsLike, it.icon
             )
         }
     }

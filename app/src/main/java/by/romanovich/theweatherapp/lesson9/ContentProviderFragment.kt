@@ -3,10 +3,12 @@ package by.romanovich.theweatherapp.lesson9
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -90,9 +92,41 @@ class ContentProviderFragment : Fragment() {
     }
 
 
-    fun getContacts(){
-
+    private fun getContacts() {
+        context?.let { it ->
+            //contentResolver - это содержит в себе перечень контент провайдеров, обращается к базам данных
+            val contentResolver = it.contentResolver
+            //курсор на таблицу, запрос в базу данных к query таблице контактов
+            val cursor = contentResolver.query(
+                ContactsContract.Contacts.CONTENT_URI,
+                null,
+                null,
+                null,
+                //сортировка по имени, по возрастанию. DESK по убыванию
+                ContactsContract.Contacts.DISPLAY_NAME + " ASC"
+            )
+            cursor?.let { cursor->
+                //от 0 до всего массива контактов
+                for (i in 0 until cursor.count) {
+                    //двигаем курсор с 0 и дальше
+                    cursor.moveToPosition(i)
+                    //получаем имя
+                    //мы у курсора спрашиваем индекс для имени
+                    val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                    addView(name)
+                }
+            }
+            cursor?.close()
+        }
     }
+
+    private fun addView(name:String) {
+        binding.containerForContacts.addView(TextView(requireContext()).apply {
+            text = name
+            textSize = 30f
+        })
+    }
+
 
     private fun showDialog() {
         AlertDialog.Builder(requireContext())

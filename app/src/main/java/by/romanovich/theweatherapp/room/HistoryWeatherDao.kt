@@ -1,5 +1,6 @@
 package by.romanovich.theweatherapp.room
 
+import android.database.Cursor
 import androidx.room.*
 
 @Dao
@@ -13,6 +14,14 @@ interface HistoryWeatherDao {
     @Delete
     fun delete(entity: HistoryWeatherEntity)
 
+//удалять историю по ид
+    @Query("DELETE FROM history_weather_entity WHERE id=:id")
+    fun delete(id: Long)
+
+    //вызов чтоб получать историю по id
+    @Query("SELECT * FROM history_weather_entity WHERE id=:id")
+    fun getHistoryCursor(id: Long): Cursor
+
     @Update
     fun update(entity: HistoryWeatherEntity)
 
@@ -23,3 +32,12 @@ interface HistoryWeatherDao {
 
     //fun getAllHistoryWeather() // TODO по какому-то полю получить, было бы неплохо
 }
+
+
+/*/** LESSON 9**/
+@Query("DELETE FROM history_weather_entity WHERE id=:id")
+fun delete(id: Long)
+
+@Query("SELECT * FROM history_weather_entity WHERE id=:id")
+fun getHistoryCursor(id: Long): Cursor
+/****/*/

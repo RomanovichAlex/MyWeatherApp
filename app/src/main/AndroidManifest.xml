@@ -48,6 +48,12 @@
                 <action android:name="myAction" />
             </intent-filter>
         </receiver>
+        
+        <provider
+            android:authorities="@str/authorities"
+            android:name=".lesson9.EducationContentProvider"
+            android:exported="true"
+            android:enabled="true"/>
 
     </application>
 
