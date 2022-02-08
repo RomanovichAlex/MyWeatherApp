@@ -13,4 +13,6 @@ import androidx.room.RoomDatabase
 abstract class HistoryDatabase: RoomDatabase() {
     //функция доступа к нашей погоде,
     abstract fun historyWeatherDao():HistoryWeatherDao
+
+
 }

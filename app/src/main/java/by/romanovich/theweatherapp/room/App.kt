@@ -34,6 +34,17 @@ class App: Application() {
                         //мы уверены что ничего плохого не случится тогда
                         //.allowMainThreadQueries() // TODO нужно убрать эту строку
                             //и из нее получаем
+//добовляем миграци.
+                        /*.addMigrations(object : Migration(1,2){
+                            //при миграции выполняется этот код
+                            override fun migrate(database: SupportSQLiteDatabase) {
+                                with(database){
+                                    execSQL("ALTER TABLE history_weather_entity RENAME COLUMN icon TO icon1")
+                                }
+                            }
+                        })*/
+
+
                         .build()
                 }
             }
