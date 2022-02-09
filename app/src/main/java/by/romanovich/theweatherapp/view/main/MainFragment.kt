@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.FragmentMainBinding
+import by.romanovich.theweatherapp.model.City
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.view.details.DetailsFragment
@@ -122,12 +123,12 @@ class MainFragment : Fragment(), OnMyItemClickListener {
     private val REFRESH_PERIOD = 60000L
 
 
-
     private fun showAddressDialog(address:String,location: Location){
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_address_title))
             .setMessage(address)
             .setPositiveButton(getString(R.string.dialog_address_get_weather)) { _, _ ->
+                toDetails(Weather(City(address,location.latitude,location.longitude)))
             }
             .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
             .create()
@@ -139,6 +140,7 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         Log.d(""," $location")
         //запускаем асинхронно
         Thread{
+            //
             val geocoder = Geocoder(requireContext())
             val listAddress=geocoder.getFromLocation(location.latitude,location.longitude,1)
             requireActivity().runOnUiThread{
@@ -159,9 +161,6 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         }
         override fun onProviderEnabled(provider: String) {
             super.onProviderEnabled(provider)
-        }
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            super.onStatusChanged(provider, status, extras)
         }
     }
 
@@ -329,6 +328,20 @@ class MainFragment : Fragment(), OnMyItemClickListener {
                         //новый бандл, с которым сейчас буду работать
                         Bundle().apply {
                             //код для работы с бандлом, в котором принимаются изменения
+                            putParcelable(BUNDLE_KEY, weather)
+                        }
+                    ))
+                .addToBackStack("").commit()
+        }
+    }
+
+    //передаем погоду
+    private fun toDetails(weather: Weather) {
+        activity?.run {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.container,
+                    DetailsFragment.newInstance(
+                        Bundle().apply {
                             putParcelable(BUNDLE_KEY, weather)
                         }
                     ))

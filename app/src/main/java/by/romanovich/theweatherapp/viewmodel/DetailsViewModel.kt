@@ -27,8 +27,12 @@ class DetailsViewModel(
 
     fun getLiveData() = liveData
 
+
+    //спасли базу данных от работы в главном потоке
     fun saveWeather(weather: Weather){
-        repositoryLocalImpl.saveWeather(weather)
+        Thread {
+            repositoryLocalImpl.saveWeather(weather)
+        }.start()
     }
 
 
