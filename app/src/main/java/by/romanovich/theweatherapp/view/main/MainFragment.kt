@@ -160,6 +160,9 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         override fun onProviderEnabled(provider: String) {
             super.onProviderEnabled(provider)
         }
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            super.onStatusChanged(provider, status, extras)
+        }
     }
 
 //Если пользователь дал разрешение, получаем местоположение
