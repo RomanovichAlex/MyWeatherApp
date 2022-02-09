@@ -70,10 +70,7 @@ class CitiesHistoryAdapter(val listener: OnMyItemClickListener) :
                 .componentRegistry { add(SvgDecoder(this@loadUrl.context)) }
                 .build()
 
-            val request = ImageRequest.Builder(this.context)
-                .data(url)
-                .target(this)
-                .build()
+            val request = ImageRequest.Builder(this.context).data(url).target(this).build()
 
             imageLoader.enqueue(request)
         }

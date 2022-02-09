@@ -1,11 +1,23 @@
 package by.romanovich.theweatherapp.view.main
 
+import android.Manifest
+import android.annotation.SuppressLint
+
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +28,7 @@ import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.view.details.DetailsFragment
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.MainViewModel
+
 
 
 class MainFragment : Fragment(), OnMyItemClickListener {
@@ -61,28 +74,163 @@ class MainFragment : Fragment(), OnMyItemClickListener {
     }
 
     private fun initView() {
-        var isRussian = requireActivity().getPreferences(Activity.MODE_PRIVATE).getBoolean("isRussian",true)
+        var isRussian =
+            requireActivity().getPreferences(Activity.MODE_PRIVATE).getBoolean("isRussian", true)
         initLocation(isRussian)
         with(binding) {
             mainFragmentRecyclerView.adapter = adapter
             //по нажатию на кнопку русские города в мировые
             mainFragmentFAB.setOnClickListener {
-                isRussian = !isRussian
+                isRussian = ! isRussian
                 initLocation(isRussian)
+            }
+            mainFragmentFABLocation.setOnClickListener {
+                checkPermission()
             }
         }
     }
 
-    /*private fun sentRequest() {
-        isRussian = !isRussian
-        if (isRussian) {
-            viewModel.getWeatherFromLocalSourceRus()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        } else {
-            viewModel.getWeatherFromLocalSourceWorld()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+
+    //спрашиваем есть ли у нас разрешение к контактам
+    private fun checkPermission() {
+        context?.let {
+            when {
+                //на вход идет контекст есть ли  разрешение
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    getLocation()
+                }
+                // нужна ли рацианализация(первый раз метод не сработает)
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS) -> {
+                    showDialogRatio()
+                }
+                //если отказали
+                else -> {
+                    myRequestPermission()
+                }
+            }
         }
-    }*/
+    }
+
+
+//дистанция для обновления
+    private val MIN_DISTANCE = 100f
+    //время обновления == 1 мин
+    private val REFRESH_PERIOD = 60000L
+
+
+    private fun getAddress(location: Location){
+        Log.d(""," $location")
+        /*Thread{
+           val geocoder = Geocoder(requireContext())
+           val listAddress=geocoder.getFromLocation(location.latitude,location.longitude,1)
+       }.start()*/
+    }
+
+
+    private val locationListener = object : LocationListener{
+        override fun onLocationChanged(location: Location) {
+            getAddress(location)
+
+        }
+
+        override fun onProviderDisabled(provider: String) {
+            super.onProviderDisabled(provider)
+        }
+        override fun onProviderEnabled(provider: String) {
+            super.onProviderEnabled(provider)
+        }
+    }
+
+//Если пользователь дал разрешение, получаем местоположение
+    private fun getLocation() {
+    activity?.let {
+        if(ContextCompat.checkSelfPermission(
+                it,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )==PackageManager.PERMISSION_GRANTED){
+            // Получить менеджер геолокаций
+            val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//включен ли провайдер джпс
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
+                providerGPS?.let {
+// Будем получать геоположение через каждые 60 секунд или каждые 100 метров
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        //вешаем на джпс лисенер который будет обновляться каждые 60 секунд или каждые 100 метров
+                            REFRESH_PERIOD,
+                            MIN_DISTANCE,
+                            locationListener
+                    )
+                }
+            }else {
+                val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                lastLocation?.let {
+                    getAddress(it)
+                }
+            }
+        }else{
+
+        }
+    }
+}
+
+
+
+    private fun showDialog(){
+
+    }
+
+    val REQUEST_CODE = 999
+    //делаем запрос на получение жпс координат
+    private fun myRequestPermission() {
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
+    }
+
+    //и проверяем результат
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE) {
+
+            when {
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {
+                    getLocation()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                    showDialogRatio()
+                }
+                else -> {
+                    Log.d("", "КОНЕЦ")
+                }
+            }
+        }
+    }
+
+    private fun showDialogRatio() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Доступ к геолокации") // TODO HW
+            .setMessage(getString(R.string.dialog_message_no_gps))
+            .setPositiveButton("Предоставить доступ") { _, _ ->
+                myRequestPermission()
+            }
+            .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+    }
+
+
+
+
+
+
+
+
     private fun initLocation(isRussian:Boolean) {
         with(viewModel){
             if (isRussian) getWeatherFromLocalSourceRus()
@@ -98,27 +246,6 @@ class MainFragment : Fragment(), OnMyItemClickListener {
             requireActivity().getPreferences(Activity.MODE_PRIVATE).edit().putBoolean("isRussian", false).apply()
         }
     }
-
-    /*//просматриваем изминения лайфдаты
-    private fun renderData(appState: AppState) {
-        //пробегаемся по трем состояниям сервера
-        when (appState) {
-            is AppState.Error -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
-                Snackbar.make(binding.root, getString(R.string.Error), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.retryAgein)) { sentRequest() }.show() }
-            is AppState.Loading -> {
-                //видимый
-                binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
-            }
-            is AppState.Success -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
-                //в случае удачи, подгружаем адаптер
-                adapter.setWeather(appState.weatherData)
-                Snackbar.make(binding.root, getString(R.string.Succes), Snackbar.LENGTH_LONG).show()
-            }
-        }
-    }*/
 
     private fun renderData(appState: AppState) {
         with(binding) {
@@ -144,19 +271,6 @@ class MainFragment : Fragment(), OnMyItemClickListener {
     }
 
 
-    /*private fun View.showSnackBarWithoutAction(text: String, length: Int) {
-        Snackbar.make(this, text, length).show()
-    }
-
-    private fun View.showSnackBar(
-        text: String,
-        actionText: String,
-        action: (View) -> Unit,
-        length: Int = Snackbar.LENGTH_INDEFINITE
-    ) {
-        Snackbar.make(this, text, length).setAction(actionText, action).show()
-    }*/
-
 
     // Важно! Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого
     //поведения. В Activity ничего похожего делать не требуется.
@@ -180,21 +294,8 @@ class MainFragment : Fragment(), OnMyItemClickListener {
         fun newInstance() = MainFragment()
     }
 
-    //Было
-    /*override fun onItemClick(weather: Weather) {
-        //контейнер в котором передаются данные
-        val bundle=Bundle()
-        // в контейнер, по ключу поместили погоду
-        bundle.putParcelable(BUNDLE_KEY,weather)
-        //переходим в транзакцию, в ней переходим в supportFragmentManager и в ней говорим
-        requireActivity().supportFragmentManager.beginTransaction()
-                //добавить в контейнер, созданный нами бандл
-            .add(R.id.container, DetailsFragment.newInstance(bundle))
-                //что бы не закрывалось приложение по нажатию назад
-            .addToBackStack("").commit()
-    }
-}*/
-    //Стало
+
+
     override fun onItemClick(weather: Weather) {
 //если активити не нулл, я с ней работаю как с ресивером
         activity?.run {
