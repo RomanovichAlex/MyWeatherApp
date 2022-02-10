@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "405935491315",
+    "project_id": "theweatherapp-35f1c",
+    "storage_bucket": "theweatherapp-35f1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405935491315:android:8e67b9380f12ce869acf86",
+        "android_client_info": {
+          "package_name": "by.romanovich.theweatherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405935491315-8f7a9bjj7f7cmpqfuu5bjifdj5dpued6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVIaobviDiQitpGki1XBHn8dDGHUyZX84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405935491315-8f7a9bjj7f7cmpqfuu5bjifdj5dpued6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
