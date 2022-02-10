@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                 description = channelDescription_2
             }
             notificationManager.createNotificationChannel(channel_2)
+            //notificationManager.deleteNotificationChannel(CHANNEL_ID_2)
         }
         //отправляем нотификацию во второй канал
         notificationManager.notify(NOTIFICATION_ID_2,notificationBuilder_2.build())
