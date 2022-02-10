@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.ActivityMainBinding
+import by.romanovich.theweatherapp.lesson10.MapsFragment
 import by.romanovich.theweatherapp.lesson6.MyBroadcastReceiver
 import by.romanovich.theweatherapp.lesson6.ThreadsFragment
 import by.romanovich.theweatherapp.lesson9.ContentProviderFragment
@@ -93,9 +94,15 @@ class MainActivity : AppCompatActivity() {
                     true
                 }R.id.menu_content -> {
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.container, ContentProviderFragment.newInstance()).addToBackStack("")
+                        .add(R.id.container, ContentProviderFragment.newInstance())
+                        .addToBackStack("")
                         .commit()
                     true
+                }
+                    R.id.menu_google_maps -> {
+                        supportFragmentManager.beginTransaction()
+                            .add(R.id.container, MapsFragment()).addToBackStack("").commit()
+                        true
                 }else -> {
                     super.onOptionsItemSelected(item)
                 }

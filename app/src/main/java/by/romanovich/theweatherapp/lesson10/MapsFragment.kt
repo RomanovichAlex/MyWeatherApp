@@ -1,12 +1,15 @@
 package by.romanovich.theweatherapp.lesson10
 
+import androidx.fragment.app.Fragment
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import by.romanovich.theweatherapp.R
+
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -43,3 +46,7 @@ class MapsFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
     }
 }
+
+
+//SHA1: 30:67:C2:ED:30:F5:F6:4A:98:72:1F:4B:49:81:27:DD:A1:9B:53:23
+//SHA-256: 02:4E:9F:00:CA:0C:BA:B7:96:A7:DC:7F:37:DC:B9:41:D1:6E:D2:34:5E:21:71:FA:18:73:C0:7D:09:13:36:6B
