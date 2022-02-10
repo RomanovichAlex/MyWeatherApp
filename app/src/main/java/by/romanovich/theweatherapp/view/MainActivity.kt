@@ -1,16 +1,11 @@
 package by.romanovich.theweatherapp.view
 //глянуть 2 лекция 2.28 мин !!! объяснение работы приложения
 //глянуть 3 лекция 4.28 мин !!! объяснение работы приложения
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import by.romanovich.theweatherapp.R
 import by.romanovich.theweatherapp.databinding.ActivityMainBinding
 import by.romanovich.theweatherapp.lesson6.MyBroadcastReceiver

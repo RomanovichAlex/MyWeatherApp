@@ -1,16 +1,14 @@
 package by.romanovich.theweatherapp.view.main
 
+
 import android.Manifest
-import android.annotation.SuppressLint
-
-
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +28,6 @@ import by.romanovich.theweatherapp.utils.BUNDLE_KEY
 import by.romanovich.theweatherapp.view.details.DetailsFragment
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.MainViewModel
-
 
 
 class MainFragment : Fragment(), OnMyItemClickListener {
