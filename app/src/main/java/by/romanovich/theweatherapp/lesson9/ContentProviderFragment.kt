@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.romanovich.theweatherapp.databinding.FragmentContentProviderBinding
@@ -23,7 +24,7 @@ class ContentProviderFragment : Fragment() {
     private var _binding: FragmentContentProviderBinding? = null
     private val binding: FragmentContentProviderBinding
         get() {
-            return _binding!!
+            return _binding !!
         }
 
     override fun onCreateView(
@@ -45,7 +46,8 @@ class ContentProviderFragment : Fragment() {
         context?.let {
             when {
                 //на вход идет контекст есть ли  разрешение
-                ContextCompat.checkSelfPermission(it,
+                ContextCompat.checkSelfPermission(
+                    it,
                     Manifest.permission.READ_CONTACTS
                 ) == PackageManager.PERMISSION_GRANTED -> {
                     getContacts()
@@ -61,13 +63,23 @@ class ContentProviderFragment : Fragment() {
             }
         }
     }
-
-    //запрашиваем пермишонс
     val REQUEST_CODE_CONTACTS = 999
     val REQUEST_CODE_CALL = 998
+    //создаем запрос через registerForActivityResult и контракт на получение регистра
     private fun myRequestPermission(){
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_CONTACTS)
-    }
+    val launcher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { it ->
+
+            if (it) {
+                getContacts()
+            } else {
+
+            }
+        }
+    launcher.launch(Manifest.permission.READ_CONTACTS)
+}
+
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
