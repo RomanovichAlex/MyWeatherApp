@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        //закрываем слушателя
         override fun onDestroy() {
             super.onDestroy()
             unregisterReceiver(receiver)
