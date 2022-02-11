@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import by.romanovich.theweatherapp.databinding.FragmentDetailsBinding
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
+import by.romanovich.theweatherapp.view.BaseFragment
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.DetailsViewModel
 import coil.ImageLoader
@@ -18,14 +19,9 @@ import coil.load
 import coil.request.ImageRequest
 
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBinding::inflate) {
 
 
-    private var _binding: FragmentDetailsBinding? = null
-    private val binding: FragmentDetailsBinding
-        get() {
-            return _binding !!
-        }
 
     private val viewModel: DetailsViewModel by lazy {
         ViewModelProvider(this).get(DetailsViewModel::class.java)
@@ -119,20 +115,6 @@ class DetailsFragment : Fragment() {
             .build()
 
         imageLoader.enqueue(request)
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
 

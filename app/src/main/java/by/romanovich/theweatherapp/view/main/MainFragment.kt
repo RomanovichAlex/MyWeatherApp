@@ -21,36 +21,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.romanovich.theweatherapp.R
+import by.romanovich.theweatherapp.databinding.FragmentHistoryBinding
 import by.romanovich.theweatherapp.databinding.FragmentMainBinding
 import by.romanovich.theweatherapp.model.City
 import by.romanovich.theweatherapp.model.Weather
 import by.romanovich.theweatherapp.utils.BUNDLE_KEY
+import by.romanovich.theweatherapp.view.BaseFragment
 import by.romanovich.theweatherapp.view.details.DetailsFragment
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.MainViewModel
 
 
-class MainFragment : Fragment(), OnMyItemClickListener {
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate), OnMyItemClickListener {
 
-    //вызываем класс олицитворяющий наш макет, нулевой биндинг
-    private var _binding: FragmentMainBinding? = null
-
-    // ссылка типа Фрагмент биндинг
-    private val binding: FragmentMainBinding
-        //указываем геттер который возращает биндинг что он точно не нулл
-        get() {
-            //!!- это точно не нулл
-            return _binding !!
-        }
-
-    /*//было
-// в мфа передаем
-    private val adapter = MainFragmentAdapter(this)*/
-    //Стало by lazy— ленивая инициализация
     private val adapter: CitiesAdapter by lazy {
         CitiesAdapter(this)
     }
-
 
     //во вью делаем ссылку на вью модел
     private val viewModel: MainViewModel by lazy {
@@ -243,11 +229,6 @@ class MainFragment : Fragment(), OnMyItemClickListener {
 
 
 
-
-
-
-
-
     private fun initLocation(isRussian:Boolean) {
         with(viewModel){
             if (isRussian) getWeatherFromLocalSourceRus()
@@ -288,29 +269,9 @@ class MainFragment : Fragment(), OnMyItemClickListener {
     }
 
 
-
-    // Важно! Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого
-    //поведения. В Activity ничего похожего делать не требуется.
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        //binding.tv // null pointer
-        //присваеваем binding fragment заменяемый контейнер активити, который может быть нулл, возращаем который точно не нулл
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     companion object {
         fun newInstance() = MainFragment()
     }
-
 
 
     override fun onItemClick(weather: Weather) {

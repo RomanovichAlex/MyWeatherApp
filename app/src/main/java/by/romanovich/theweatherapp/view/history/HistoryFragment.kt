@@ -7,20 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import by.romanovich.theweatherapp.databinding.FragmentDetailsBinding
 import by.romanovich.theweatherapp.databinding.FragmentHistoryBinding
 import by.romanovich.theweatherapp.model.Weather
+import by.romanovich.theweatherapp.view.BaseFragment
 import by.romanovich.theweatherapp.view.main.OnMyItemClickListener
 import by.romanovich.theweatherapp.viewmodel.AppState
 import by.romanovich.theweatherapp.viewmodel.HistoryViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class HistoryFragment : Fragment(), OnMyItemClickListener {
+class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate), OnMyItemClickListener {
 
-    private var _binding: FragmentHistoryBinding? = null
-    private val binding: FragmentHistoryBinding
-        get() {
-            return _binding!!
-        }
 
     private val adapter: CitiesHistoryAdapter by lazy {
         CitiesHistoryAdapter(this)
@@ -59,18 +56,6 @@ class HistoryFragment : Fragment(), OnMyItemClickListener {
         Snackbar.make(this,text,length).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     companion object {
         fun newInstance() = HistoryFragment()
