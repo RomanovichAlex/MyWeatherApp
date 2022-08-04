@@ -4,6 +4,7 @@ package by.romanovich.theweatherapp.view.main
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -126,6 +127,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             //
             val geocoder = Geocoder(requireContext())
             val listAddress=geocoder.getFromLocation(location.latitude,location.longitude,1)
+            if (listAddress != null)
             requireActivity().runOnUiThread{
                 showAddressDialog(listAddress[0].getAddressLine(0),location)
             }
@@ -155,7 +157,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 Manifest.permission.ACCESS_FINE_LOCATION
             )==PackageManager.PERMISSION_GRANTED){
             // Получить менеджер геолокаций
-            val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val locationManager = it.getSystemService(LOCATION_SERVICE) as LocationManager
 //включен ли провайдер джпс
             if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                 val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
@@ -181,10 +183,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 }
 
 
-
-    private fun showDialog(){
-
-    }
 
     val REQUEST_CODE = 999
     //делаем запрос на получение жпс координат
@@ -217,12 +215,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     private fun showDialogRatio() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Доступ к геолокации") // TODO HW
+            .setTitle(getString(R.string.geoOpen))
             .setMessage(getString(R.string.dialog_message_no_gps))
-            .setPositiveButton("Предоставить доступ") { _, _ ->
+            .setPositiveButton(getString(R.string.openAcess)) { _, _ ->
                 myRequestPermission()
             }
-            .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.dontReady)) { dialog, _ -> dialog.dismiss() }
             .create()
             .show()
     }

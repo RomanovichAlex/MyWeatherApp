@@ -56,6 +56,9 @@
     <string name="dialog_address_title">Ваш адрес</string>
     <string name="dialog_address_get_weather">Узнать погоду</string>
     <string name="poin_minsk_stepyanka">Минск, Степянка</string>
+    <string name="geoOpen">Доступ к геолокации</string>
+    <string name="openAcess">Предоставить доступ</string>
+    <string name="dontReady">Не надо</string>
 
 
 </resources>
